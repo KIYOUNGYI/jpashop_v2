@@ -1,0 +1,19 @@
+spring:
+  datasource:
+    # MVCC=TRUE 이거 설정 권장 사항~~
+    url: jdbc:h2:tcp://127.0.0.1/~/test
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+  # spring 메뉴얼 참고해~~
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+#        show_sql: true # system 을 통해 로그 찍는것
+        format_sql: true
+
+logging:
+  level:
+    org.hibernate.SQL: debug
