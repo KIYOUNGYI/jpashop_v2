@@ -4,6 +4,8 @@ import jpabook.jpashop_v2.domain.Address;
 import jpabook.jpashop_v2.domain.Order;
 import jpabook.jpashop_v2.domain.OrderStatus;
 import jpabook.jpashop_v2.repository.OrderRepository;
+import jpabook.jpashop_v2.repository.OrderSimpleQueryDto;
+import jpabook.jpashop_v2.repository.OrderSimpleQueryRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +28,7 @@ public class OrderSimpleApiController
 {
     private final OrderRepository orderRepository;
 
+    private final OrderSimpleQueryRepository orderSimpleQueryRepository;
 
     /**
      * 이렇게 하면 무슨 문제가 있을까??? 무한루프 (ㅋㅋㅋㅋ) 혼난다.
@@ -57,6 +60,25 @@ public class OrderSimpleApiController
         return result;
     }
 
+    @GetMapping("/api/v3/simple-orders")
+    public List<SimpleOrderDto> orderV3()
+    {
+        List<Order> orders = orderRepository.findAllWithMemberDelivery();
+        List<SimpleOrderDto> result = orders.stream()
+                                .map(o->new SimpleOrderDto(o))
+                                .collect(toList());
+        return result;
+    }
+
+    //v3는 재사용성이 좋은 반면, v4는 재사용성이 별로임. 그리고 우열을 가리기 힘듬
+    //성능면에서는 v4가 좀 더 좋다. v4 코드 지저분 // 요즘 네트워크 차이가 별로 안나서 크게 성능 차이 안남.
+    //api 스펙에 맞춘 코드가 곧 단점임
+    @GetMapping("/api/v4/simple-orders")
+    public List<OrderSimpleQueryDto> ordersV4() {
+        return orderSimpleQueryRepository.findOrderDtos();
+    }
+
+
     @Data
     static class SimpleOrderDto {
         private Long orderId;
@@ -72,4 +94,6 @@ public class OrderSimpleApiController
             address = order.getDelivery().getAddress();// LAZY 초기화
         }
     }
+
+
 }

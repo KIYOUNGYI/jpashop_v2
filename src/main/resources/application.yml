@@ -1,4 +1,7 @@
 spring:
+  output:
+    ansi:
+      enabled: always
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
