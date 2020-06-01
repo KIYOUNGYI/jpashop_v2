@@ -39,4 +39,10 @@ public class OrderRepository
 //        //querydsl 쓰자
 //    }
 
+    public List<Order> findAll()
+    {
+        List<Order> temp = em.createQuery("select o from Order o",Order.class).getResultList();
+//        System.out.println("temp size:"+temp.size());
+        return temp;
+    }
 }
