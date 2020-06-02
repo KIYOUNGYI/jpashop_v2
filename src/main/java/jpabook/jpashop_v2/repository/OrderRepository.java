@@ -61,6 +61,7 @@ public class OrderRepository
                 " join fetch o.member m" +
                 " join fetch o.delivery d", Order.class).getResultList();
     }
+
     /**
      *     select
      *         order0_.order_id as order_id1_7_0_,
@@ -88,5 +89,36 @@ public class OrderRepository
      *             on order0_.delivery_id=delivery2_.delivery_id
      */
 
-
+    /**
+     * distinct 키워드는 2가지 역할을 한다.
+     * 1] db 에 distinct 를 날린다.
+     * 2] root Entity 가 중복인 경우, 걸러서 콜렉션에 담아준다.
+     * 단점 >>> 페이징을 못한다.
+     * 페이징 필요한 api 는 이거 못쓴다.
+     * 글로우픽으로 치면, 어워드, 제품상세만 가능하고, cursor 포함된 api는 못쓰는것.
+     * 2020-06-02 22:12:33.283  WARN 4210 --- [nio-8080-exec-1] o.h.h.internal.ast.QueryTranslatorImpl   : HHH000104: firstResult/maxResults specified with collection fetch; applying in memory!
+     * 페치 조인을 썻는데 페이징 쿼리가 들어갔네?
+     * 메모리에서 (소팅)페이징 처리를 할거얌!
+     * 데이터가 100000건이었으면, 10000개를 앱으로 끌어올린다음에 out of memory 뜨는 극단적인 선택을 하겠죵.
+     *
+     * @return
+     */
+    public List<Order> findAllWithItem()
+    {
+        return em.createQuery(
+                "select distinct o from Order o"+
+                        " join fetch o.member m"+
+                        " join fetch o.delivery d"+
+                        " join fetch o.orderItems oi"+
+                        " join fetch oi.item i",Order.class)
+//                .setFirstResult(1)
+//                .setMaxResults(100)
+                .getResultList();
+//        return em.createQuery(
+//                "select o from Order o"+
+//                        " join fetch o.member m"+
+//                        " join fetch o.delivery d"+
+//                        " join fetch o.orderItems oi"+
+//                        " join fetch oi.item i",Order.class).getResultList();
+    }
 }
