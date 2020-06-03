@@ -1,4 +1,5 @@
 .gradle/
+.idea
 .idea/codeStyles/
 .idea/dbnavigator.xml
 .idea/gradle.xml
@@ -9,3 +10,6 @@
 .idea/vcs.xml
 build/generated/
 out/production/classes/
+build/
+.idea/compiler.xml
+*.iml
