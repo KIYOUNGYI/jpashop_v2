@@ -2,6 +2,7 @@ package jpabook.jpashop_v2;
 
 import jpabook.jpashop_v2.domain.*;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,11 +18,12 @@ public class InitDb
 
     @PostConstruct
     public void init() {
-        initService.dbInit1();
-        initService.dbInit2();
-        initService.dbInit3();
-        initService.dbInit4();
-        initService.dbInit5();
+//        initService.dbInit1();
+//        initService.dbInit2();
+//        initService.dbInit3();
+//        initService.dbInit4();
+//        initService.dbInit5();
+          initService.dbInit6();
     }
 
     @Component
@@ -99,6 +101,38 @@ public class InitDb
             Order order = Order.createOrder(member, delivery, orderItem1, orderItem2);
             em.persist(order);
         }
+        public void dbInit6()
+        {
+            Book book1 = createBook("Python 301", 20000, 600);
+            em.persist(book1);
+            for(int i=0;i<10;i++)
+            {
+                String x = "user_"+Integer.toString(i);
+                Member member = createMember(x,"서울","1","dummyzip");
+                em.persist(member);
+                Delivery delivery = createDelivery(member);
+                OrderItem orderItem1 = OrderItem.createOrderItem(book1, 20000, 1);
+                Order order = Order.createOrder(member, delivery, orderItem1);
+                em.persist(order);
+            }
+
+            Book book2 = createBook("Jpa 101", 10000, 10000000);
+            Book book3 = createBook("Spring 101", 10000, 10000000);
+            em.persist(book2);
+            em.persist(book3);
+            for(int i=0;i<2000;i++)
+            {
+                String x = "user__"+Integer.toString(i);
+                Member member = createMember(x,"대전","1","dummyzip");
+                em.persist(member);
+                Delivery delivery = createDelivery(member);
+                OrderItem orderItem1 = OrderItem.createOrderItem(book2, 20000, 2);
+                OrderItem orderItem2 = OrderItem.createOrderItem(book3, 30000, 3);
+                Order order = Order.createOrder(member, delivery, orderItem1,orderItem2);
+                em.persist(order);
+            }
+        }
+
         private Member createMember(String name, String city, String street,
                                     String zipcode) {
             Member member = new Member();
