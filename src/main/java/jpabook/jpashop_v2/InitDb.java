@@ -15,11 +15,14 @@ public class InitDb
     private final InitService initService;
 
 
-//    @PostConstruct
-//    public void init() {
-//        initService.dbInit1();
-//        initService.dbInit2();
-//    }
+    @PostConstruct
+    public void init() {
+        initService.dbInit1();
+        initService.dbInit2();
+        initService.dbInit3();
+        initService.dbInit4();
+        initService.dbInit5();
+    }
 
     @Component
     @Transactional
@@ -51,8 +54,49 @@ public class InitDb
             Delivery delivery = createDelivery(member);
             OrderItem orderItem1 = OrderItem.createOrderItem(book1, 20000, 3);
             OrderItem orderItem2 = OrderItem.createOrderItem(book2, 40000, 4);
-            Order order = Order.createOrder(member, delivery, orderItem1,
-                    orderItem2);
+            Order order = Order.createOrder(member, delivery, orderItem1, orderItem2);
+            em.persist(order);
+        }
+        public void dbInit3()
+        {
+            Member member = createMember("userC", "부산", "2", "2222");
+            em.persist(member);
+            Book book1 = createBook("Network 101", 20000, 200);
+            em.persist(book1);
+            Book book2 = createBook("Network 201", 40000, 300);
+            em.persist(book2);
+            Delivery delivery = createDelivery(member);
+            OrderItem orderItem1 = OrderItem.createOrderItem(book1, 20000, 3);
+            OrderItem orderItem2 = OrderItem.createOrderItem(book2, 40000, 4);
+            Order order = Order.createOrder(member, delivery, orderItem1, orderItem2);
+            em.persist(order);
+        }
+        public void dbInit4()
+        {
+            Member member = createMember("userD", "춘천", "2", "2222");
+            em.persist(member);
+            Book book1 = createBook("CLoud Architecture 101", 20000, 200);
+            em.persist(book1);
+            Book book2 = createBook("CLoud Architecture 201", 40000, 300);
+            em.persist(book2);
+            Delivery delivery = createDelivery(member);
+            OrderItem orderItem1 = OrderItem.createOrderItem(book1, 20000, 3);
+            OrderItem orderItem2 = OrderItem.createOrderItem(book2, 40000, 4);
+            Order order = Order.createOrder(member, delivery, orderItem1, orderItem2);
+            em.persist(order);
+        }
+        public void dbInit5()
+        {
+            Member member = createMember("userE", "파주", "2", "2222");
+            em.persist(member);
+            Book book1 = createBook("Python 101", 20000, 200);
+            em.persist(book1);
+            Book book2 = createBook("Python 201", 40000, 300);
+            em.persist(book2);
+            Delivery delivery = createDelivery(member);
+            OrderItem orderItem1 = OrderItem.createOrderItem(book1, 20000, 3);
+            OrderItem orderItem2 = OrderItem.createOrderItem(book2, 40000, 4);
+            Order order = Order.createOrder(member, delivery, orderItem1, orderItem2);
             em.persist(order);
         }
         private Member createMember(String name, String city, String street,

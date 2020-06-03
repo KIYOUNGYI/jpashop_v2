@@ -81,6 +81,22 @@ public class OrderApiController
         return result;
     }
 
+    /**
+     * order 입장에서 toone 에 해당하는 건, member, delivery 이건 fetch join 걸어도 됨, 이건 data row 수가 늘어나는건 아니니.
+     * @return
+     */
+    @GetMapping("/api/v3.1/orders")
+    public List<OrderDto> ordersV3_1_page()
+    {
+        List<Order> orders = orderRepository.findAllWithMemberDelivery();
+        //n+1 문제가 터지겠지
+
+        List<OrderDto> result = orders.stream()
+                .map(o -> new OrderDto(o))
+                .collect(toList());
+        return result;
+    }
+
 
     @Data
     static class OrderDto
