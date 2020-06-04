@@ -102,3 +102,10 @@ persist(order)<br>
 3. 그래도 안되면 DTO로 직접 조회하는 방법을 사용한다.
 4. 최후의 방법은 JPA가 제공하는 네이티브 SQL이나 스프링 JDBC Template을 사용해서 SQL을 직접 사
 용한다.
+
+
+=========== QueryDSL =============
+[1] 설정
+[2] intellij > 우측 Gradle > Tasks > other > compileQuerydsl  더블클릭시 build 디렉토리 > querydsl > Q로 시작하는 자바파일 생성됨.
+[3] ./gradlew clean
+[4] 뷸드된 파일들은 깃으로 관리하면 안됨
