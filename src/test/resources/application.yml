@@ -9,7 +9,7 @@ spring:
   # spring 메뉴얼 참고해~~
   jpa:
     hibernate:
-      ddl-auto: create-drop # memory db 만, 이거 신경써
+      ddl-auto: update # memory db 만, 이거 신경써
     properties:
       hibernate:
         show_sql: true # system 을 통해 로그 찍는것

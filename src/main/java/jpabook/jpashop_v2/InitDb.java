@@ -17,11 +17,13 @@ public class InitDb
 
     @PostConstruct
     public void init() {
-        initService.dbInit1();
-        initService.dbInit2();
-        initService.dbInit3();
-        initService.dbInit4();
-        initService.dbInit5();
+//        initService.dbInit1();
+//        initService.dbInit2();
+//        initService.dbInit3();
+//        initService.dbInit4();
+//        initService.dbInit5();
+//        initService.dbInit6();
+//        initService.dbInit7();
     }
 
     @Component
@@ -99,6 +101,31 @@ public class InitDb
             Order order = Order.createOrder(member, delivery, orderItem1, orderItem2);
             em.persist(order);
         }
+
+        public void dbInit6()
+        {
+            Team teamC = new Team("teamC");
+            em.persist(teamC);
+            Member member = new Member("Paul",null, teamC,20);
+            em.persist(member);
+        }
+
+        public void dbInit7()
+        {
+            Team teamA = new Team("teamA");
+            Team teamB = new Team("teamB");
+            em.persist(teamA);
+            em.persist(teamB);
+            Member member1 = new Member("member1", null, teamA);
+            Member member2 = new Member("member2", null, teamA);
+            Member member3 = new Member("member3", null, teamB);
+            Member member4 = new Member("member4", null, teamB);
+            em.persist(member1);
+            em.persist(member2);
+            em.persist(member3);
+            em.persist(member4);
+        }
+
         private Member createMember(String name, String city, String street,
                                     String zipcode) {
             Member member = new Member();
