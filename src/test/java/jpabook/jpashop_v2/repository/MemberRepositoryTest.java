@@ -26,10 +26,12 @@ import java.util.List;
 
 import static jpabook.jpashop_v2.domain.QMember.*;
 import static jpabook.jpashop_v2.domain.QMember.member;
+import static jpabook.jpashop_v2.domain.QTeam.team;
 import static org.assertj.core.api.Assertions.*;
 
 @SpringBootTest
 @Transactional// EntitiyManager 활용하려면 이게 있어야 하네?
+//@Commit
 public class MemberRepositoryTest {
 
     @Autowired
@@ -39,62 +41,35 @@ public class MemberRepositoryTest {
     MemberRepository memberRepository;
 
     JPAQueryFactory queryFactory;//필드로 빼서 사용하는 것 권장
-//    @Test
-//    @Transactional // 테스트케이스에 있으면 바로 롤백 시켜버림
-//    @Rollback(false)// 근데 가끔 데이터를 넣어서 눈으로 직접 확인하고 싶을땐, 이 옵션을 사용하면 된다.
-//    public void dummy()
-//    {
-//        //given
-//        Member member = new Member("memberB");
-////        member.setName("memberB");
-//
-//        //when
-//        memberRepository.save(member);
-//        Member findMember = memberRepository.findOne(member.getId());
-//
-//        //then
-//        assertThat(findMember.getId()).isEqualTo(member.getId());
-//        assertThat(findMember.getName()).isEqualTo(member.getName());
-//
-//        System.out.println("findMember == member : " + (findMember==member));
-//    }
-
 
     @BeforeEach
     public void before() {
         // 동시성 문제 없나? 없음 스프링 프레임워크가 주입해주는 엔티티 매니저가 멀티쓰레드에 아무 문제 없게 설계됨
         queryFactory = new JPAQueryFactory(em);//
-        Team teamA = new Team("teamA");
-        Team teamB = new Team("teamB");
-        em.persist(teamA);
-        em.persist(teamB);
+//        dummy();
+    }
 
-        Member member1 = new Member("member1", null, teamA,30);
-        Member member2 = new Member("member2", null, teamB,40);
-        Member member3 = new Member("member3",null,teamB,20);
-        Member member4 = new Member("member4",null,teamA,10);
-        em.persist(member1);
-        em.persist(member2);
-        em.persist(member3);
-        System.out.println("before each called!");
-//        for(int i=0;i<26;i++)
-//        {
-//            Member member=null;
-//            if(i%2==0)
-//            {
-//                member = new Member("user_"+(char)(97+i),null,teamA,i+1);
-//            }
-//            else
-//            {
-//                member = new Member("user_"+(char)(97+i),null,teamB,i+1);
-//            }
-//            em.persist(member);
-//        }
-        System.out.println(">>>>>>>> members:"+teamA.getMembers().toString());
+    private void dummy()
+    {
+        Team teamG = new Team("teamG");
+        Team teamH = new Team("teamH");
+        em.persist(teamG);
+        em.persist(teamH);
+        for (int i = 0; i < 26; i++) {
+            Member member = null;
+            if (i % 2 == 0) {
+                member = new Member("user_" + (char) (97 + i), null, teamG, i + 1);
+            } else {
+                member = new Member("user_" + (char) (97 + i), null, teamH, i + 1);
+            }
+            em.persist(member);
+        }
+
     }
 
     @Test
-    public void startJPQL() {
+    public void startJPQL()
+    {
         Member findMember = em.createQuery("select m from Member m where m.name = :name", Member.class)
                 .setParameter("name", "member1").getSingleResult();
         System.out.println("findMember.toString():" + findMember.toString());
@@ -115,18 +90,17 @@ public class MemberRepositoryTest {
     @Test
     public void startQueryDsl() {
         //[1]
+//        queryFactory = new JPAQueryFactory(em);//
         QMember m = new QMember("dummy");//같은 테이블 선언해서 조인걸어야 할 때 별칭 필요, 그 외에는 필요 없음
 
-        System.out.println("==================");
         Member member = queryFactory.select(m)
                                     .from(m)
-                                    .where(m.name.eq("member1"))//parameter 바인딩
+                                    .where(m.name.eq("user_a"))//parameter 바인딩
                                     .fetchOne();
-
-        assertThat(member.getName()).isEqualTo("member1");
-        System.out.println("==================");
+        System.out.println("member:"+member.toString());
+//        assertThat(member.getName()).isEqualTo("user_a");
         //[2]
-        QMember m2 = QMember.member;//Q파일에 static 으로 선언한게 있더라
+//        QMember m2 = QMember.member;//Q파일에 static 으로 선언한게 있더라
 //        Member member2 = queryFactory.select(m2)
 //                .from(m2)
 //                .where(m2.name.eq("member1"))//parameter 바인딩
@@ -137,16 +111,14 @@ public class MemberRepositoryTest {
     @Test
     public void startQueryDsl2()
     {
-        // 스태틱 타고 들어가면
-        //  public static final QMember member = new QMember("member1");
-        //  그래서 쿼리 까보며 ㄴselect mem
-
+        //  스태틱 타고 들어가면 public static final QMember member = new QMember("member1");
+        QMember qm = new QMember("dummy");
         //[3]
-        Member findMember = queryFactory.select(member)
-                                        .from(member)
-                                        .where(member.name.eq("member1"))//바인딩 처리
+        Member findMember = queryFactory.select(qm)
+                                        .from(qm)
+                                        .where(qm.name.eq("member1"))//바인딩 처리
                                         .fetchOne();
-
+        System.out.println("findMember:"+findMember.toString());
         assertThat(findMember.getName()).isEqualTo("member1");
     }
 
@@ -199,7 +171,6 @@ public class MemberRepositoryTest {
                                                                 .where(member.age.goe(20))
                                                                 .orderBy(member.name.asc(), member.age.asc())
                                                                 .fetch();
-
         Member member5 = result.get(0);
         Member member6 = result.get(1);
         Member member7 = result.get(2);
@@ -303,13 +274,42 @@ public class MemberRepositoryTest {
     @Test
     public void group() throws Exception
     {
-        //given
+        List<Tuple> results = queryFactory
+                .select(team.name, member.age.avg())
+                .from(member)
+                .join(member.team, team)
+                .groupBy(team.name)
+                .fetch();
 
-        //when
-
-        //end
-
+        System.out.println("results >>> "+results.toString());
+//        results >>> [[teamA, 15.0], [teamB, 35.0], [teamG, 13.0], [teamH, 14.0]]
     }
+
+    /**
+     * 팀 A에 소속된 모든 회원
+     * 조인의 기본 문법은 첫 번째 파라미터에 조인 대상을 지정하고, 두 번째 파라미터에 별칭(alias)으로 사용할
+     * Q 타입을 지정하면 된다.
+     * - join() , innerJoin() : 내부 조인(inner join)
+     * - leftJoin() : left 외부 조인(left outer join)
+     * - rightJoin() : rigth 외부 조인(rigth outer join)
+     * - JPQL의 on 과 성능 최적화를 위한 fetch 조인 제공 다음 on 절에서 설명
+     *
+     * join(조인 대상, 별칭으로 사용할 Q타입)
+     */
+    @Test
+    public void join() throws Exception {
+        QMember member = QMember.member;
+        QTeam team = QTeam.team;
+        List<Member> result = queryFactory
+                .selectFrom(member)
+                .join(member.team, team)
+                .where(team.name.eq("teamH"))
+                .fetch();
+
+        System.out.println("result : "+result.toString());
+    }
+
+
 
     public static void main(String[] args)
     {

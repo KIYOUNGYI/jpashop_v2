@@ -113,3 +113,9 @@ persist(order)<br>
 
 fetchREsult -> 페이징 쿼리가 복잡해지면
 성능이 중요한 것은 쿼리를 두 방 날려야 한다.
+
+
+git cache issue
+$ git rm -r --cached .
+$ git add .
+$ git commit -m "fixed untracked files”

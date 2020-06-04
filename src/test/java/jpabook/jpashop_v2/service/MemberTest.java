@@ -24,10 +24,10 @@ public class MemberTest
         Team teamB = new Team("teamB");
         em.persist(teamA);
         em.persist(teamB);
-        Member member1 = new Member("member1", null, teamA);
-        Member member2 = new Member("member2", null, teamA);
-        Member member3 = new Member("member3", null, teamB);
-        Member member4 = new Member("member4", null, teamB);
+        Member member1 = new Member("member1", null, teamA ,10);
+        Member member2 = new Member("member2", null, teamA, 20);
+        Member member3 = new Member("member3", null, teamB, 30);
+        Member member4 = new Member("member4", null, teamB, 40);
         em.persist(member1);
         em.persist(member2);
         em.persist(member3);

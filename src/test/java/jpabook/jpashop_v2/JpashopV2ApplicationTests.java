@@ -27,7 +27,6 @@ class JpashopV2ApplicationTests {
 //	@Rollback(false)// 근데 가끔 데이터를 넣어서 눈으로 직접 확인하고 싶을땐, 이 옵션을 사용하면 된다.
 	public void dummy()
 	{
-		System.out.println("are you here?");
 		Member member = new Member();
 		member.setName("dummy");
 		em.persist(member);
