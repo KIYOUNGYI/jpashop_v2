@@ -109,3 +109,13 @@ persist(order)<br>
 [2] intellij > 우측 Gradle > Tasks > other > compileQuerydsl  더블클릭시 build 디렉토리 > querydsl > Q로 시작하는 자바파일 생성됨.
 [3] ./gradlew clean
 [4] 뷸드된 파일들은 깃으로 관리하면 안됨
+
+
+fetchREsult -> 페이징 쿼리가 복잡해지면
+성능이 중요한 것은 쿼리를 두 방 날려야 한다.
+
+
+git cache issue
+$ git rm -r --cached .
+$ git add .
+$ git commit -m "fixed untracked files”
