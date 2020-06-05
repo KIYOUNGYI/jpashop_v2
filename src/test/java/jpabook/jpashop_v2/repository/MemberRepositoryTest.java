@@ -2,6 +2,8 @@ package jpabook.jpashop_v2.repository;
 
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
+import com.querydsl.core.types.ExpressionUtils;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.core.types.dsl.NumberExpression;
@@ -12,6 +14,9 @@ import jpabook.jpashop_v2.domain.Member;
 import jpabook.jpashop_v2.domain.QMember;
 import jpabook.jpashop_v2.domain.QTeam;
 import jpabook.jpashop_v2.domain.Team;
+import jpabook.jpashop_v2.dto.MemberDto;
+import jpabook.jpashop_v2.dto.QMemberDto;
+import jpabook.jpashop_v2.dto.UserDto;
 import org.assertj.core.api.Assertions;
 import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
@@ -625,5 +630,124 @@ public class MemberRepositoryTest {
                 .fetchOne();
         System.out.println("result:"+result.toString());
     }
+
+    /**
+     * 프로젝션과 결과 반환
+     * 프로젝션: select 대상 지정
+     */
+    @Test
+    public void f1()
+    {
+        List<String> result = queryFactory
+                .select(member.name)
+                .from(member)
+                .fetch();
+        System.out.println("result:"+result.toString());
+    }
+
+    /**
+     * 튜플 조회
+     * 프로젝션 대상이 둘 이상일 때 사용
+     */
+    @Test
+    public void f2()
+    {
+        List<Tuple> result = queryFactory
+                .select(member.name, member.age)
+                .from(member)
+                .fetch();
+        for (Tuple tuple : result) {
+            String username = tuple.get(member.name);
+            Integer age = tuple.get(member.age);
+            System.out.println("username=" + username);
+            System.out.println("age=" + age);
+        }
+    }
+
+    /**
+     * 프로퍼티 접근 - Setter
+     */
+    @Test
+    public void f3()
+    {
+        List<MemberDto> result = queryFactory
+                .select(Projections.bean(MemberDto.class,
+                        member.name,
+                        member.age))
+                .from(member)
+                .fetch();
+        System.out.println("result:"+result.toString());
+    }
+
+    /**
+     * 필드 직접 접근
+     */
+    @Test
+    public void f4()
+    {
+        List<MemberDto> result = queryFactory
+                .select(Projections.fields(MemberDto.class,
+                        member.name,
+                        member.age))
+                .from(member)
+                .fetch();
+        System.out.println("result:"+result.toString());
+    }
+
+    /**
+     * 별칭이 다를 때
+     * TODO 이건 강의 들을 때 빡 집중해서 보자
+     */
+    @Test
+    public void f5()
+    {
+//        QMember memberSub = new QMember("memberSub");
+//        List<UserDto> result = queryFactory
+//                .select(Projections.fields(UserDto.class,
+//                        member.name.as("name"),
+//                        ExpressionUtils.as(
+//                                JPAExpressions
+//                                        .select(memberSub.age.max())
+//                                        .from(memberSub), "age")
+//                        )
+//                ).from(member)
+//                .fetch();
+//        System.out.println("result:"+result.toString());
+
+//        List<MemberDto> result = queryFactory
+//                .select(Projections.constructor(MemberDto.class,
+//                        member.name,
+//                        member.age))
+//                .from(member)
+//                .fetch();
+    }
+
+
+    /**
+     * QueryProjection 활용
+     * 이 방법은 컴파일러로 타입을 체크할 수 있으므로 가장 안전한 방법이다. 다만 DTO에 QueryDSL 어노테
+     * 이션을 유지해야 하는 점과 DTO까지 Q 파일을 생성해야 하는 단점이 있다.
+     * 참고 : distinct는 JPQL의 distinct와 같다.
+     */
+    @Test
+    public void f6()
+    {
+        List<MemberDto> result = queryFactory
+                .select(new QMemberDto(member.name, member.age))
+                .from(member)
+                .fetch();
+        System.out.println("result:"+result.toString());
+
+        List<String> result2 = queryFactory
+                .select(member.name).distinct()
+                .from(member)
+                .fetch();
+        System.out.println("result2:"+result2.toString());
+    }
+
+
+
+
+
 
 }
