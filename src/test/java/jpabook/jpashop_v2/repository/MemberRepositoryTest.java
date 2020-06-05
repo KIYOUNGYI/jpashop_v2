@@ -47,8 +47,9 @@ public class MemberRepositoryTest {
         // 동시성 문제 없나? 없음 스프링 프레임워크가 주입해주는 엔티티 매니저가 멀티쓰레드에 아무 문제 없게 설계됨
         queryFactory = new JPAQueryFactory(em);//
 //        dummy();
-    }
 
+    }
+    @Test
     private void dummy()
     {
         Team teamG = new Team("teamG");
@@ -71,9 +72,9 @@ public class MemberRepositoryTest {
     public void startJPQL()
     {
         Member findMember = em.createQuery("select m from Member m where m.name = :name", Member.class)
-                .setParameter("name", "member1").getSingleResult();
+                .setParameter("name", "user_a").getSingleResult();
         System.out.println("findMember.toString():" + findMember.toString());
-        assertThat(findMember.getName()).isEqualTo("member1");
+        assertThat(findMember.getName()).isEqualTo("user_a");
     }
 
 
@@ -98,7 +99,7 @@ public class MemberRepositoryTest {
                                     .where(m.name.eq("user_a"))//parameter 바인딩
                                     .fetchOne();
         System.out.println("member:"+member.toString());
-//        assertThat(member.getName()).isEqualTo("user_a");
+        assertThat(member.getName()).isEqualTo("user_a");
         //[2]
 //        QMember m2 = QMember.member;//Q파일에 static 으로 선언한게 있더라
 //        Member member2 = queryFactory.select(m2)
@@ -116,10 +117,10 @@ public class MemberRepositoryTest {
         //[3]
         Member findMember = queryFactory.select(qm)
                                         .from(qm)
-                                        .where(qm.name.eq("member1"))//바인딩 처리
+                                        .where(qm.name.eq("user_a"))//바인딩 처리
                                         .fetchOne();
         System.out.println("findMember:"+findMember.toString());
-        assertThat(findMember.getName()).isEqualTo("member1");
+        assertThat(findMember.getName()).isEqualTo("user_a");
     }
 
 
@@ -128,20 +129,20 @@ public class MemberRepositoryTest {
     {
         Member findMember = queryFactory
                 .selectFrom(member)
-                .where(member.name.eq("member3")
+                .where(member.name.eq("user_t")
                         .and(member.age.eq(20)))
                 .fetchOne();
-        assertThat(findMember.getName()).isEqualTo("member3");
+        assertThat(findMember.getName()).isEqualTo("user_t");
 
         // OR
         Member findMember2 = queryFactory
                 .selectFrom(member)
                 .where(
-                        member.name.eq("member3"),
+                        member.name.eq("user_t"),
                         member.age.eq(20)
                 )
                 .fetchOne();
-        assertThat(findMember2.getName()).isEqualTo("member3");
+        assertThat(findMember2.getName()).isEqualTo("user_t");
 
     }
 
@@ -260,10 +261,10 @@ public class MemberRepositoryTest {
 
         Tuple tuple = result.get(0);
 //        System.out.println("result:"+result.toString());//result:[[26, 351, 13.5, 26, 1]]result:[[26, 351, 13.5, 26, 1]]
-        assertThat(tuple.get(member.count())).isEqualTo(26);
-        assertThat(tuple.get(member.age.sum())).isEqualTo(351);
-        assertThat(tuple.get(member.age.avg())).isEqualTo(13.5);
-        assertThat(tuple.get(member.age.max())).isEqualTo(26);
+        assertThat(tuple.get(member.count())).isEqualTo(30);
+        assertThat(tuple.get(member.age.sum())).isEqualTo(451);
+        assertThat(tuple.get(member.age.avg())).isEqualTo(15.033333333333333);
+        assertThat(tuple.get(member.age.max())).isEqualTo(40);
         assertThat(tuple.get(member.age.min())).isEqualTo(1);
     }
 
@@ -282,7 +283,6 @@ public class MemberRepositoryTest {
                 .fetch();
 
         System.out.println("results >>> "+results.toString());
-//        results >>> [[teamA, 15.0], [teamB, 35.0], [teamG, 13.0], [teamH, 14.0]]
     }
 
     /**
@@ -311,10 +311,5 @@ public class MemberRepositoryTest {
 
 
 
-    public static void main(String[] args)
-    {
-//        result  >>> : [Member(id=4, name=user_b, age=2), Member(id=5, name=user_c, age=3), Member(id=6, name=user_d, age=4), Member(id=7, name=user_e, age=5), Member(id=8, name=user_f, age=6), Member(id=9, name=user_g, age=7), Member(id=10, name=user_h, age=8), Member(id=11, name=user_i, age=9), Member(id=12, name=user_j, age=10), Member(id=13, name=user_k, age=11)]
-//        result2 >>> : [Member(id=14, name=user_l, age=12), Member(id=15, name=user_m, age=13), Member(id=16, name=user_n, age=14), Member(id=17, name=user_o, age=15), Member(id=18, name=user_p, age=16), Member(id=19, name=user_q, age=17), Member(id=20, name=user_r, age=18), Member(id=21, name=user_s, age=19), Member(id=22, name=user_t, age=20), Member(id=23, name=user_u, age=21)]
-    }
 
 }
