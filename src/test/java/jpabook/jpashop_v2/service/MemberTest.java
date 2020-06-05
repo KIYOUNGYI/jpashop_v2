@@ -13,7 +13,7 @@ import java.util.List;
 
 @SpringBootTest
 @Transactional
-@Commit
+//@Commit
 public class MemberTest
 {
     @PersistenceContext
