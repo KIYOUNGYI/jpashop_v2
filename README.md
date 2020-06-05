@@ -124,5 +124,9 @@ $ git commit -m "fixed untracked files”
 제약 : left join, left outer join 등 외부조인 불가능
 
 
+동적 쿼리 - BooleanBuilder 사용
+동적 쿼리를 해결하는 두가지 방식
+[1] BooleanBuilder
+[2] Where 다중 파라미터 사용
 
 
