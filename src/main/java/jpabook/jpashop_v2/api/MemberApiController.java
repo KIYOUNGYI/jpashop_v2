@@ -28,7 +28,7 @@ public class MemberApiController
      * [2] member entity -> name 에서 username 으로 바꾸면, api 스펙이 바뀜. 이게 문제, 클라이언트 팀에서 호출하면 어쩔
      * [3] 궁극적으로 큰 장애가 많이 발생하게 됨. -> dto를 만드는게 맞음
      * [4] 외부에 entity를 노출시키지 말고, 파라미터로 받지도 말고,
-     * @param member
+     *
      * @return
      */
     @PostMapping("/api/v1/members")
