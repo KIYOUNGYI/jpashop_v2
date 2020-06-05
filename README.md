@@ -119,3 +119,10 @@ git cache issue
 $ git rm -r --cached .
 $ git add .
 $ git commit -m "fixed untracked files”
+
+연관관계 없어도 join 가능하다.(ceta join) - a.k.a (막조인)
+제약 : left join, left outer join 등 외부조인 불가능
+
+
+
+

@@ -1,4 +1,7 @@
 spring:
+  output:
+    ansi:
+      enabled: always
   # 사실, datasource, jpa 다 주석처리되어도 스프링이 알아서 메모리 db 띄워줌. 얼마나 신기하냐.
   datasource:
     # MVCC=TRUE 이거 설정 권장 사항~~
