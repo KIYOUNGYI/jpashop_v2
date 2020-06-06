@@ -1,9 +1,8 @@
 package jpabook.jpashop_v2.service;
 
 import jpabook.jpashop_v2.domain.Member;
-import jpabook.jpashop_v2.repository.MemberRepository;
+import jpabook.jpashop_v2.repository.MemberJpaRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,7 +31,7 @@ public class MemberService
 
     //[2] 생성자 injection
 
-    private final MemberRepository memberRepository;
+    private final MemberJpaRepository memberRepository;
     // 장점1 : 한번 was 뜨면 생성자 생성될 때 한 번 만들어질 때, 제외하곤, 변경될 일이 없음
     // 장점2 : 테스트 할 때 멤버서비스를 작성할 때, 뭔가 이걸 주입해줘야해 그런거 인지시킬 수 있는 장점이 있는 것 같다.
     // 장점3 : 사실은 autowired 없어도 됨, 요즘 스프링 최신 버전들은 이걸 지원해줌

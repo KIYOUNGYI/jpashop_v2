@@ -3,7 +3,7 @@ package jpabook.jpashop_v2.api;
 import jpabook.jpashop_v2.domain.Member;
 import jpabook.jpashop_v2.dto.MemberSearchCondition;
 import jpabook.jpashop_v2.dto.MemberTeamDto;
-import jpabook.jpashop_v2.repository.MemberRepository;
+import jpabook.jpashop_v2.repository.MemberJpaRepository;
 import jpabook.jpashop_v2.service.MemberService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -25,7 +25,7 @@ public class MemberApiController
 
     private final MemberService memberService;
 
-    private final MemberRepository memberRepository;
+    private final MemberJpaRepository memberRepository;
 
     /**
      * 심각한 문제

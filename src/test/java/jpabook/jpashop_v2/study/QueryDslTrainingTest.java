@@ -2,13 +2,10 @@ package jpabook.jpashop_v2.study;
 
 import com.querydsl.core.QueryResults;
 import com.querydsl.core.Tuple;
-import com.querydsl.core.types.ExpressionUtils;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.CaseBuilder;
 import com.querydsl.core.types.dsl.Expressions;
-import com.querydsl.core.types.dsl.NumberExpression;
 import com.querydsl.jpa.JPAExpressions;
-import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jpabook.jpashop_v2.domain.Member;
 import jpabook.jpashop_v2.domain.QMember;
@@ -16,18 +13,11 @@ import jpabook.jpashop_v2.domain.QTeam;
 import jpabook.jpashop_v2.domain.Team;
 import jpabook.jpashop_v2.dto.MemberDto;
 import jpabook.jpashop_v2.dto.QMemberDto;
-import jpabook.jpashop_v2.dto.UserDto;
-import jpabook.jpashop_v2.repository.MemberRepository;
-import org.assertj.core.api.Assertions;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.annotation.Commit;
-import org.springframework.test.annotation.Rollback;
 //import org.junit.Test;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -36,7 +26,6 @@ import javax.transaction.Transactional;
 
 import java.util.List;
 
-import static jpabook.jpashop_v2.domain.QMember.*;
 import static jpabook.jpashop_v2.domain.QMember.member;
 import static jpabook.jpashop_v2.domain.QTeam.team;
 import static org.assertj.core.api.Assertions.*;

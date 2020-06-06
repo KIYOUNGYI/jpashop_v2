@@ -2,7 +2,7 @@ package jpabook.jpashop_v2.service;
 
 import jpabook.jpashop_v2.domain.*;
 import jpabook.jpashop_v2.repository.ItemRepository;
-import jpabook.jpashop_v2.repository.MemberRepository;
+import jpabook.jpashop_v2.repository.MemberJpaRepository;
 import jpabook.jpashop_v2.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ import java.util.List;
 public class OrderService
 {
     private final OrderRepository orderRepository;
-    private final MemberRepository memberRepository;
+    private final MemberJpaRepository memberRepository;
     private final ItemRepository itemRepository;
 
     //주문
