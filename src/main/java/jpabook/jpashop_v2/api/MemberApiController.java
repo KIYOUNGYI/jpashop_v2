@@ -4,10 +4,13 @@ import jpabook.jpashop_v2.domain.Member;
 import jpabook.jpashop_v2.dto.MemberSearchCondition;
 import jpabook.jpashop_v2.dto.MemberTeamDto;
 import jpabook.jpashop_v2.repository.MemberJpaRepository;
+import jpabook.jpashop_v2.repository.MemberRepository;
 import jpabook.jpashop_v2.service.MemberService;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -25,7 +28,7 @@ public class MemberApiController
 
     private final MemberService memberService;
 
-    private final MemberJpaRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     /**
      * 심각한 문제
@@ -106,6 +109,17 @@ public class MemberApiController
     }
 
 
+    @GetMapping("api/v4/members")
+    public Page<MemberTeamDto> searchMemberV2(MemberSearchCondition condition,
+                                              Pageable pageable) {
+        return memberRepository.searchPageSimple(condition, pageable);
+    }
+    @GetMapping("api/v5/members")
+    public Page<MemberTeamDto> searchMemberV3(MemberSearchCondition condition,
+                                              Pageable pageable) {
+        return memberRepository.searchPageComplex(condition, pageable);
+    }
+
     @Data
     @AllArgsConstructor
     static class Result<T>
@@ -153,4 +167,24 @@ public class MemberApiController
             this.id = id;
         }
     }
+
+    /**
+     * 스프링 데이터 정렬(Sort)
+     * 스프링 데이터 JPA는 자신의 정렬(Sort)을 Querydsl의 정렬(OrderSpecifier)로 편리하게 변경하는 기
+     * 능을 제공한다. 이 부분은 뒤에 스프링 데이터 JPA가 제공하는 Querydsl 기능에서 살펴보겠다.
+     * 스프링 데이터의 정렬을 Querydsl의 정렬로 직접 전환하는 방법은 다음 코드를 참고하자.
+     * 스프링 데이터 Sort를 Querydsl의 OrderSpecifier로 변환
+     * JPAQuery<Member> query = queryFactory
+     *  .selectFrom(member);
+     * for (Sort.Order o : pageable.getSort()) {
+     *  PathBuilder pathBuilder = new PathBuilder(member.getType(),
+     * member.getMetadata());
+     *  query.orderBy(new OrderSpecifier(o.isAscending() ? Order.ASC : Order.DESC,
+     *  pathBuilder.get(o.getProperty())));
+     * }
+     * List<Member> result = query.fetch();
+     * > 참고: 정렬( Sort )은 조건이 조금만 복잡해져도 Pageable 의 Sort 기능을 사용하기 어렵다. 루트 엔티티
+     * 범위를 넘어가는 동적 정렬 기능이 필요하면 스프링 데이터 페이징이 제공하는 Sort 를 사용하기 보다는 파
+     * 라미터를 받아서 직접 처리하는 것을 권장한다.
+     */
 }
