@@ -24,6 +24,10 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-devtools'
+	compile("org.springframework.boot:spring-boot-starter-actuator")
+	// https://mvnrepository.com/artifact/de.codecentric/spring-boot-admin-starter-server
+	compile group: 'de.codecentric', name: 'spring-boot-admin-starter-server', version: '2.2.3'
+	compile group: 'de.codecentric', name: 'spring-boot-admin-starter-client', version: '2.2.3'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'com.h2database:h2' // test 할 때!!!!
 	annotationProcessor 'org.projectlombok:lombok'
@@ -41,6 +45,8 @@ dependencies {
 
 	//querydsl 추가
 	implementation 'com.querydsl:querydsl-jpa'
+
+
 }
 
 test {
