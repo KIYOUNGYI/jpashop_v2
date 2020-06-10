@@ -2,6 +2,8 @@ package jpabook.jpashop_v2.study;
 
 import jpabook.jpashop_v2.domain.Member;
 import jpabook.jpashop_v2.domain.Team;
+import org.hibernate.Hibernate;
+import org.hibernate.jpa.internal.PersistenceUnitUtilImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -151,6 +153,51 @@ public class ProxyPractice
             //m2 프록시로 반환해봐야 얻는 이점이 없다.
             System.out.println("m1==m2"+ (refMember.getClass()==findMember.getClass()));//jpa 에서는 이걸 어떻게든 맞춰준다.
 //            logic(m1,m2);
+
+
+        }
+        catch (Exception e)
+        {
+            System.out.println("error!!!!");
+            e.printStackTrace();
+        }
+        finally
+        {
+
+        }
+    }
+
+
+    @Test
+    public void f5()
+    {
+        try
+        {
+            Team team = new Team("alpha");
+            em.persist(team);
+
+            Member member1 = new Member();
+            member1.setName("Paul Yi");
+            member1.setAge(31);
+            member1.setTeam(team);
+            Member member2 = new Member();
+            member2.setName("Kyle Yi");
+            member2.setAge(32);
+            member2.setTeam(team);
+
+
+            em.persist(member1);
+            em.persist(member2);
+            em.flush();
+            em.clear();
+
+            Member refMember  = em.getReference(Member.class,member1.getId());
+            System.out.println("refMember="+refMember.getClass());
+//            refMember.getName();//이런 코드가 있으면, 강제로 초기화됨
+            Hibernate.initialize(refMember);//hibernate 가 호출하는 강제초기화 코드
+
+            System.out.println("isLoaded="+emf.getPersistenceUnitUtil().isLoaded(refMember));
+
 
 
         }

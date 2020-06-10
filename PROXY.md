@@ -64,3 +64,4 @@ Sql 쿼리 실행함 -> findMember.getName() 때문에, id 는 가지고 있음
 * 영속성 컨텍스트의 도움을 받을 수 없는 준 영속성 상태일 때, 프록시를 초기화 하면 문제 발생 ( 하이버네이트는 org.hibernate.LazyInitalizationException 예외 터짐(실무에서 정말 많이 많남)
 
 
+## 프록시를 이해해야 즉시로딩과 지연로딩을 이해하기 수월.
