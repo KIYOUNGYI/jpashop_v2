@@ -11,6 +11,7 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.*;
+import java.util.List;
 
 @SpringBootTest
 @Transactional
@@ -200,6 +201,147 @@ public class ProxyPractice
 
 
 
+        }
+        catch (Exception e)
+        {
+            System.out.println("error!!!!");
+            e.printStackTrace();
+        }
+        finally
+        {
+
+        }
+    }
+
+
+    @Test
+    public void 지연로딩()
+    {
+        try
+        {
+            Team team = new Team("alpha");
+            em.persist(team);
+
+            Member member1 = new Member();
+            member1.setName("Paul Yi");
+            member1.setAge(31);
+            member1.setTeam(team);
+            em.persist(member1);
+            em.flush();
+            em.clear();
+
+            Member m = em.find(Member.class,member1.getId());
+
+            System.out.println("m = "+ m.getTeam().getClass());
+            // @ManyToOne(fetch = FetchType.LAZY)
+            //    @JoinColumn(name="team_id")
+            //    private Team team;
+            // m = class jpabook.jpashop_v2.domain.Team$HibernateProxy$9IQog6qH
+            System.out.println("============================");
+            m.getTeam().getName();//터치하면 이 시점에 쿼리가 나간다.
+        }
+        catch (Exception e)
+        {
+            System.out.println("error!!!!");
+            e.printStackTrace();
+        }
+        finally
+        {
+
+        }
+    }
+
+
+    @Test
+    public void 즉시로딩()
+    {
+        try
+        {
+            Team team = new Team("alpha");
+            em.persist(team);
+
+            Member member1 = new Member();
+            member1.setName("Paul Yi");
+            member1.setAge(31);
+            member1.setTeam(team);
+            em.persist(member1);
+
+            Member member2 = new Member();
+            member2.setName("Paul Yi");
+            member2.setAge(31);
+            member2.setTeam(team);
+            em.persist(member2);
+
+            em.flush();
+            em.clear();
+
+            Member m = em.find(Member.class,member1.getId());
+
+            System.out.println("m = "+ m.getTeam().getClass());
+
+            List<Member> select_m_from_member_m = em.createQuery("select m from Member m", Member.class).getResultList();
+
+            // 제일 처음 하는 것은 sql 로 번역
+            // SELECT * FROM MEMBER
+            // MEMBER 를 가져왔더니 어라? 팀이 즉시로딩으로 가져오라 하네?
+            // 그러면, 즉시로딩이란 말은 무조건 값이 다 들어가 있어야 되용.
+            // select * from team where team_id = member.team_id blah blah blah
+            // 팀의 개수만큼 쿼리가 나간다.
+            System.out.println("select_m_from_member_m:"+select_m_from_member_m.toString());
+
+
+            System.out.println("============================");
+            m.getTeam().getName();//터치하면 이 시점에 쿼리가 나간다.
+        }
+        catch (Exception e)
+        {
+            System.out.println("error!!!!");
+            e.printStackTrace();
+        }
+        finally
+        {
+
+        }
+    }
+
+
+    @Test
+    public void 페치조인()
+    {
+        try
+        {
+            Team team = new Team("alpha");
+            em.persist(team);
+
+            Member member1 = new Member();
+            member1.setName("Paul Yi");
+            member1.setAge(31);
+            member1.setTeam(team);
+            em.persist(member1);
+
+            Member member2 = new Member();
+            member2.setName("Paul Yi");
+            member2.setAge(31);
+            member2.setTeam(team);
+            em.persist(member2);
+
+            em.flush();
+            em.clear();
+
+            Member m = em.find(Member.class,member1.getId());
+
+            System.out.println("m = "+ m.getTeam().getClass());
+
+            List<Member> select_m_from_member_m = em.createQuery("select m from Member m join fetch m.team", Member.class).getResultList();
+
+            System.out.println("select_m_from_member_m:"+select_m_from_member_m.toString());
+
+
+            System.out.println("============================");
+            m.getTeam().getName();
+            Member m2 = em.find(Member.class,member2.getId());
+            System.out.println("22222222====================");
+            m2.getTeam().getName();
         }
         catch (Exception e)
         {
