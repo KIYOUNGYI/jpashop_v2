@@ -203,3 +203,195 @@ member1 == member2; //같다.
 #### >>>> 객체를 자바 컬렉션에 저장 하듯이 DB에 저장할 수는 없을까? 
 
 ##### >>>> 그래서 나온 것이 JPA (Java Persistence API)
+
+
+# ORM
+
+자바 진영의 *ORM*기술 표준 
+
+Object Relational mapping -> 객체는 객체대로 설계하고, Relational(관계형 db)는 관계형 db대로 설계하고, 이걸 orm 이 중간에서 매핑을 해주겠다 이게 ORM 프레임워크의 그림 (대중적 언어에는 다 이런 ORM 기술 존재함)
+
+JPA 는 애플리케이션과 JDBC 사이에서 동작
+
+## JPA 동작 방식
+결론부터 애기하면 jdbc api 사용해서 통신함.
+
+### 저장 
+MemberDAO -> persist ->  (1) Entity 분석
+                                                (2)  insert sql 생성 -> 개발자가 작성(x) 
+						(3) JDBC API 사용 
+						(4) 패러다임 불일치 문제 해결 -> *중요*
+### 조회
+
+MemberDAO -> find(id) -> (1) select sql 생성
+						(2) JDBC API 사용
+						(3) ResultSet 매핑
+						(4) 패러다임 불일치 문제 해결 -> *중요*
+
+## 역사
+JPA 는 인터페이스 모음
+구현체는 Hibernate, 외 이것저것
+
+
+## JPA를 왜 사용해야 하는가? 
+### SQL 중심적인 개발에서 객체 중심으로 개발 - 생산성
+```java 
+//저장
+jpa.persist(member) 
+//조회
+Member member = jpa.find(memberId) 
+//수정
+member.setName(“변경할 이름”)
+//삭제 jpa.remove(member) 
+```
+
+### 유지보수
+기존: 필드 변경시 모든 SQL 수정 
+JPA: 필드만 추가하면 됨, SQL은 JPA가 처리 
+
+
+### *패러다임의 불일치 해결*
+
+1.JPA와 상속
+
+#### 저장
+```java
+//개발자가 할 일
+jpa.persist(album);
+//나머진 jpa 가 알아서 함
+INSERT INTO ITEM ... 
+INSERT INTO ALBUM ... 
+
+```
+
+#### 조회
+```
+개발자가 할일 
+Album album = jpa.find(Album.class, albumId);
+나머진 JPA가 처리 
+￼
+SELECT I.*, A.* 
+￼FROM ITEM I 
+￼JOIN ALBUM A ON I.ITEM_ID = A.ITEM_ID 
+```
+
+2.JPA와 연관관계 
+
+```java
+member.setTeam(team);
+jpa.persist(member);// 영구저장
+
+
+```
+
+3.JPA와 객체 그래프 탐색 
+```java
+Member member = jpa.find(Member.class, memberId);
+Team team = member.getTeam();
+```
+
+엔티티를 신뢰할 수 있음!!!
+```java 
+class MemberService 
+{ 
+... 
+	public void process() 
+	{ 
+		Member member = memberDAO.find(memberId);
+		member.getTeam(); //자유로운 객체 그래프 탐색 
+		member.getOrder().getDelivery();
+	} 
+} 
+
+```
+
+4.JPA와 비교하기 (동일한 트랜잭션에서 조회한 엔티티는 같음을 보장)
+```
+String memberId = "100";
+Member member1 = jpa.find(Member.class, memberId);
+Member member2 = jpa.find(Member.class, memberId);
+member1 == member2; //같다. 
+```
+
+### 성능
+
+#### >>>> jpa 를 쓰게되면 성능 걱정할 수 있는데, 이런 중간계층이 있으면 할 수 있는 2가지가 있음 1> 모아서 쏘는 버퍼링 2> 읽을 때 캐싱하는 것 (이건 메모리나 cpu 도 마찬가지)
+
+
+[1] 1차 캐시와 동일성(identity) 보장
+
+```java 
+/**
+* 1차 캐시와 동일성 보장 * 1. 같은 트랜잭션 안에서는 같은 엔티티를 반환 - 약간의 조회 성능 향상 
+* 2. DB Isolation Level이 Read Commit이어도 애플리케이션에서 Repeatable * Read 보장 
+￼**/
+
+String memberId = "100";
+Member m1 = jpa.find(Member.class, memberId); //SQL
+Member m2 = jpa.find(Member.class, memberId); //캐시 
+println(m1 == m2) //true
+
+```
+
+#### >>>> 뭐 캐싱 기능으로 약간의 성능 도움이 있다긴 하는데 실무관점에서 볼 때 그렇게까지 큰 이득은 없다.
+
+[2] 트랜잭션을 지원하는 쓰기 지연(transactional write-behind) 
+
+```java
+
+/**
+ * 1. 트랜잭션을 커밋할 때까지 INSERT SQL을 모음 
+ * 2. JDBC BATCH SQL 기능을 사용해서 한번에 SQL 전송 
+ **/
+
+transaction.begin(); // [트랜잭션] 시작 
+￼
+em.persist(memberA);
+em.persist(memberB);
+em.persist(memberC);
+//여기까지 INSERT SQL을 데이터베이스에 보내지 않는다. 
+//커밋하는 순간 데이터베이스에 INSERT SQL을 모아서 보낸다. 
+transaction.commit(); // [트랜잭션] 커밋 
+
+```
+
+
+Update
+```java
+/**
+* 1. UPDATE, DELETE로 인한 로우(ROW)락 시간 최소화 
+* 2. 트랜잭션 커밋 시 UPDATE, DELETE SQL 실행하고, 바로 커밋 
+**/
+transaction.begin(); // [트랜잭션] 시작 
+￼
+changeMember(memberA);
+deleteMember(memberB);
+비즈니스_로직_수행(); //비즈니스 로직 수행 동안 DB 로우 락이 걸리지 않는다. 
+//커밋하는 순간 데이터베이스에 UPDATE, DELETE SQL을 보낸다. 
+transaction.commit(); // [트랜잭션] 커밋 
+
+```
+
+[3] 지연 로딩(Lazy Loading)과 즉시로딩(Eager Loading)
+
+지연로딩
+```java 
+Member member = memberDAO.find(memberId);//SELECT * FROM MEMBER
+Team team = member.getTeam();
+String teamName = team.getName();//SELECT * FROM TEAM
+￼
+```
+
+
+* 즉시 로딩 -  JOIN SQL로 한번에 연관된 객체까지 미리 조회 
+
+```java
+Member member = memberDAO.find(memberId);// ￼ select M.*, T.* FROM MEMBER JOIN TEAM ...
+
+Team team = member.getTeam();
+String teamName = team.getName();
+```
+
+#### >>>> 보통 lazy 설정해놓은다음 최적화가 필요한 경우 그때 손을 댄다. 사실 위와 같은 예제를 코드로 직접 한다고 치면, 정말 코드를 갈아 넣어야 하는데(손이 많이 가는데) JPA를 사용한다면, 옵션 하나 키고 끄고로 해결할 수 있다(튜닝). 멤버조회할 때 무조건 팀을 가져온다, 그러면 즉시로딩이 이득이겠지, 그런데 뭐 어쩌다 팀이 필요한 경우에는 지연로딩 세팅이 이득일테고, 그래도 실무에서는 지연로딩이 정석이다. 그다음에 필요하면 튜닝하고
+
+#### >>>> 결론 : orm 은 객체와 rdb 두 기둥위에 있는 기술 (둘다 잘해라) 
