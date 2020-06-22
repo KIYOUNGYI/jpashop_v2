@@ -635,3 +635,5 @@ List<Member> members= query.getResultList();
 
 em.clear() -> 영속성 컨텍스트를 초기화
 이건 테스트 케이스 같은거 작성하고 뭔가 눈으로 쿼리를 직접 확인하고 싶을 땐, 요긴하게 쓸 수 있음
+
+
