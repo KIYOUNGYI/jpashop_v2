@@ -34,9 +34,17 @@ public class Member
     @OneToMany(mappedBy = "member")
     private List<Order> orders = new ArrayList<>();
 
+    // 기본 생성자는 필수
     public Member() {}
+
     public Member(String name)
     {
+        this.name = name;
+    }
+
+    public Member(Long id,String name)
+    {
+        this.id = id;
         this.name = name;
     }
 
