@@ -151,3 +151,27 @@ return new JPAQueryFactory(em);
 3. 스프링 데이터 리포지토리에 사용자 정의 인터페이스 상속
 
 command + option + m => 메소드 추출
+
+
+값 타입 중요한 것은
+
+1] 임베디드 타입(복합 값 타입)
+2] 값 타입 컬렉션 
+
+이 두가지가 중요. 나머지는 걍 그러려니 하고 보면 됨
+
+값 타입 분류
+기본값 타입
+* 자바 기본 타입(int,double)
+* 래퍼 클래스(Integer,Long)
+* String
+
+임베디드 타입(embedded type, 복합 값 타입) -> 우편번호, 좌표 뭐 이런거 포지션 클래스 만들어서 쓰는거
+컬렉션 값 타입(collection value type) -> 자가 기본태입이나 임데디드 타입 넣을 수 있는 
+
+int, double 같은 기본 타입(primitive type) 은 절대 공유x
+
+기본 타입은 항상 값을 복사함
+
+Integer 같은 래퍼 클래스나 String 같은 특수한 클래스는 공유 가능한 객체이지만 변경 x
+
