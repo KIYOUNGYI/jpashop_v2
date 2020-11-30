@@ -1,73 +1,79 @@
 package jpabook.jpashop_v2.domain;
 
 
-import lombok.*;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.validation.constraints.NotEmpty;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 // member <---> team n:1
 @Entity
-@Getter @Setter
-@ToString(of ={"id","name","age"})
-public class Member
-{
-    @Id
-    @GeneratedValue
-    @Column(name="member_id")
-    private Long id;
+@Getter
 
-    @NotEmpty
-    private String name;
+@ToString(of = {"id", "name", "age"})
+public class Member {
 
-    private Integer age;
+  @Id
+  @GeneratedValue
+  @Column(name = "member_id")
+  private Long id;
 
-    @Embedded
-    private Address address;
+  @NotEmpty
+  private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="team_id")
-    private Team team;
+  private Integer age;
 
-    @OneToMany(mappedBy = "member")
-    private List<Order> orders = new ArrayList<>();
+  @Embedded
+  private Address address;
 
-    // 기본 생성자는 필수
-    public Member() {}
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "team_id")
+  private Team team;
 
-    public Member(String name)
-    {
-        this.name = name;
-    }
+  @OneToMany(mappedBy = "member")
+  private List<Order> orders = new ArrayList<>();
 
-    public Member(Long id,String name)
-    {
-        this.id = id;
-        this.name = name;
-    }
+  // 기본 생성자는 필수
+  public Member() {
+  }
 
-    public Member(String name,Address address)
-    {
-        this.name = name;
-        this.address = address;
-    }
+  public Member(String name) {
+    this.name = name;
+  }
 
-    public Member(String name,Address address,Team team)
-    {
-        this.name = name;
-        this.address = address;
-        this.team = team;
-    }
+  public Member(Long id, String name) {
+    this.id = id;
+    this.name = name;
+  }
 
-    public Member(String name,Address address,Team team,Integer age)
-    {
-        this.name = name;
-        this.address = address;
-        this.team = team;
-        this.age = age;
-    }
+  public Member(String name, Address address) {
+    this.name = name;
+    this.address = address;
+  }
+
+  public Member(String name, Address address, Team team) {
+    this.name = name;
+    this.address = address;
+    this.team = team;
+  }
+
+  public Member(String name, Address address, Team team, Integer age) {
+    this.name = name;
+    this.address = address;
+    this.team = team;
+    this.age = age;
+  }
 
 
 }
