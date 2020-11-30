@@ -1,13 +1,13 @@
 spring:
   profiles:
-    active: test
+    active: local
   output:
     ansi:
       enabled: always
   # 사실, datasource, jpa 다 주석처리되어도 스프링이 알아서 메모리 db 띄워줌. 얼마나 신기하냐.
   datasource:
     # MVCC=TRUE 이거 설정 권장 사항~~
-    url: jdbc:h2:tcp://127.0.0.1/~/test # 이거 기존것은 메모리 db 였던듯.(다르더라...)
+    url: jdbc:h2:tcp://127.0.0.1/~/jpashop # 이거 기존것은 메모리 db 였던듯.(다르더라...)
     username: sa
     password:
     driver-class-name: org.h2.Driver

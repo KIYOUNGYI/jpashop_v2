@@ -9,19 +9,19 @@ spring:
     suffix: .html
   datasource:
     # MVCC=TRUE 이거 설정 권장 사항~~
-    url: jdbc:h2:tcp://127.0.0.1/~/test
+    url: jdbc:h2:tcp://127.0.0.1/~/jpashop;MVCC=TRUE
     username: sa
     password:
-    driver-class-name: org.h2.Driver
-  # spring 메뉴얼 참고해~~
+    driver-class-name: org.h2.Driver # 이렇게 설정하면 히카리 풀 을 써서 세팅을 해줌
+
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: update # create - 자동 새성
     properties:
       hibernate:
-#        show_sql: true # system 을 통해 로그 찍는것
+        # show_sql: true 이 녀석은 sysout 을 통해 찍는 것이고,
         format_sql: true
         use_sql_comments: true
 logging:
   level:
-    org.hibernate.SQL: debug
+    org.hibernate.SQL: debug # 이 녀석은 로거를 통해 찍는 것이고, 따라서 show_sql 은 운영에선 사용하면 안됨.
