@@ -15,7 +15,7 @@ public class ItemService
 {
     private final ItemRepository itemRepository;
 
-    @Transactional//오버라이딩 한 것이라 보면 됨
+    @Transactional//오버라이딩 한 것이라 보면 됨 (가까운게 더 우선권을 갖는다)
     public void saveItem(Item item)
     {
         itemRepository.save(item);
