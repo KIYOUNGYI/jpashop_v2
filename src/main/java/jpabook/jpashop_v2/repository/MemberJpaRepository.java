@@ -29,8 +29,13 @@ public class MemberJpaRepository {
 //    //스프링이 em을 만들어서 주입해줌
 //
 //    [방법2]
+//  @Autowired
   private final EntityManager em;
   private final JPAQueryFactory queryFactory;
+
+//  위에것이 있으니, 이걸 쓸 일은 없을
+//  @PersistenceUnit
+//  private EntityManagerFactory emf;
 
   public MemberJpaRepository(EntityManager em) {
     this.em = em;
@@ -40,7 +45,7 @@ public class MemberJpaRepository {
   // 원래는 persistencecontext 가 어노테이션 표준인데, 스프링부트(datajpa)가 autowired 도 지원해줌
 
   public Long save(Member m) {
-    em.persist(m);
+    em.persist(m);//캐시에 저장되고, 트랜잭션 끝나는 순간 db 에 반영 되겄쥬
     return m.getId();
   }
 
@@ -49,8 +54,7 @@ public class MemberJpaRepository {
   }
 
   public List<Member> findAll() {
-    // JPQL
-    // sql은 테이블을 대상으로 퀘리를 날리는데, JPQL은 객체를 대상으로 쿼리를 날림
+    // [JPQL] sql은 테이블을 대상으로 퀘리를 날리는데, JPQL은 엔티티 객체를 대상으로 쿼리를 날림
     return em.createQuery("select m from Member m", Member.class)
         .getResultList();
   }

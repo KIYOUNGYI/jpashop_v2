@@ -20,7 +20,7 @@ import lombok.ToString;
 // member <---> team n:1
 @Entity
 @Getter
-
+@Setter
 @ToString(of = {"id", "name", "age"})
 public class Member {
 
