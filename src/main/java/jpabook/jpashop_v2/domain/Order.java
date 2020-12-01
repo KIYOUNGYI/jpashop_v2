@@ -71,7 +71,7 @@ public class Order {
     delivery.setOrder(this);
   }
 
-  // 생성 메서드
+  // === 생성 메서드 ==//
   public static Order createOrder(Member member, Delivery delivery, OrderItem... orderItems) {
     Order order = new Order(member, delivery);
     for (OrderItem orderItem : orderItems) {
@@ -98,6 +98,8 @@ public class Order {
     }
   }
 
+  // 조회 로직
+
   /**
    * 조회 로직 전체 주문 가격 조회 로직
    */
@@ -114,6 +116,11 @@ public class Order {
       totalPrice += orderItem.getTotalPrice();
     }
     return totalPrice;
+  }
+
+  //인텔리제이가 해줌
+  public int getTotalPriceUsingMap() {
+    return orderItems.stream().mapToInt(OrderItem::getTotalPrice).sum();
   }
 
 

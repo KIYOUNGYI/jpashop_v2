@@ -60,6 +60,8 @@ public class OrderItem {
     getItem().addStock(count);
   }
 
+  //===조회 로직===//
+
   /**
    * 주문상품 전체 가격 조회
    *

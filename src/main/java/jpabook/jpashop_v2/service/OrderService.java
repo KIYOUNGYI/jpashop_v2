@@ -28,6 +28,7 @@ public class OrderService
     @Transactional
     public Long order(Long memberId, Long itemId, int count)
     {
+        //엔티티 조회
         Member member = memberRepository.findOne(memberId);
         Item item = itemRepository.findOne(itemId);
 
@@ -35,7 +36,8 @@ public class OrderService
         Delivery delivery = new Delivery();
         delivery.setAddress(member.getAddress());
         delivery.setDeliveryStatus(DeliveryStatus.READY);
-        // 주문 상품 생성
+
+        // 주문 상품 생성(예제 단순화시킴)
         OrderItem orderItem = OrderItem.createOrderItem(item, item.getPrice(),count);
 
 //        OrderItem or = new OrderItem(); // 제약
@@ -54,6 +56,8 @@ public class OrderService
         Order order = orderRepository.findOne(orderId);
         //주문 취소
         order.cancel();
+        //dirty-checking ~~ 변경 감지하면서 디비에 업데이트 쿼리가 촥촥 날라감
+        //beauty of JPA.
     }
 
     //검색
