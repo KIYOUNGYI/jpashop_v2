@@ -9,7 +9,7 @@ spring:
     suffix: .html
   datasource:
     # MVCC=TRUE 이거 설정 권장 사항~~
-    url: jdbc:h2:tcp://127.0.0.1/~/jpashop;MVCC=TRUE
+    url: jdbc:h2:tcp://127.0.0.1/~/jpashop
     username: sa
     password:
     driver-class-name: org.h2.Driver # 이렇게 설정하면 히카리 풀 을 써서 세팅을 해줌

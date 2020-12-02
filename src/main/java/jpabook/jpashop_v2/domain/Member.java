@@ -1,6 +1,7 @@
 package jpabook.jpashop_v2.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;

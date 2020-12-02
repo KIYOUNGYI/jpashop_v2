@@ -2,6 +2,7 @@ package jpabook.jpashop_v2.domain;
 
 import static javax.persistence.FetchType.LAZY;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -34,13 +35,16 @@ public class Order {
   @Column(name = "order_id")
   private Long id;
 
+  @JsonIgnore
   @ManyToOne(fetch = LAZY)
   @JoinColumn(name = "member_id")
   private Member member; //주문 회원
 
+  @JsonIgnore
   @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
   private List<OrderItem> orderItems = new ArrayList<>();
 
+  @JsonIgnore
   @OneToOne(cascade = CascadeType.ALL, fetch = LAZY)
   @JoinColumn(name = "delivery_id")
   private Delivery delivery; //배송정보
