@@ -35,12 +35,12 @@ public class Order {
   @Column(name = "order_id")
   private Long id;
 
-  @JsonIgnore
+
   @ManyToOne(fetch = LAZY)
   @JoinColumn(name = "member_id")
   private Member member; //주문 회원
 
-  @JsonIgnore
+//  @JsonIgnore
   @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
   private List<OrderItem> orderItems = new ArrayList<>();
 
@@ -115,7 +115,6 @@ public class Order {
 //    }
   public int getTotalPrice() {
     int totalPrice = 0;
-    System.out.println("orderItems length:" + orderItems.size());
     for (OrderItem orderItem : orderItems) {
       totalPrice += orderItem.getTotalPrice();
     }

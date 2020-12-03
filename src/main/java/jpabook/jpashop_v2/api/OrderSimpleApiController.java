@@ -36,6 +36,10 @@ public class OrderSimpleApiController {
 
     //order -> member -> order -> member -> order .... 무한 루프
     List<Order> all = orderRepository.findAll();
+    for (Order order : all) {
+      order.getMember().getName();//LAZY 강제 초기화
+      order.getDelivery().getAddress();//LAZY 강제 초기화
+    }
     return all;
   }
 

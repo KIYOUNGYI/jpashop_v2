@@ -42,6 +42,7 @@ public class Member {
   @JoinColumn(name = "team_id")
   private Team team;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "member")
   private List<Order> orders = new ArrayList<>();
 
