@@ -22,6 +22,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 
 @Entity
 @Table(name = "orders")
@@ -40,11 +41,11 @@ public class Order {
   @JoinColumn(name = "member_id")
   private Member member; //주문 회원
 
-//  @JsonIgnore
+//  @BatchSize(size = 1000)//컬렉션인 경우엔 이리 하고
   @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
   private List<OrderItem> orderItems = new ArrayList<>();
 
-  @JsonIgnore
+
   @OneToOne(cascade = CascadeType.ALL, fetch = LAZY)
   @JoinColumn(name = "delivery_id")
   private Delivery delivery; //배송정보

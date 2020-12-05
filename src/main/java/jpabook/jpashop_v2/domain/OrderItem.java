@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+//@BatchSize(size=100), 컬렉션이 아닌 경우엔 클래스에다가 걸어줘야 함.
 @Entity
 @Getter
 @Setter

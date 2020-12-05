@@ -12,6 +12,7 @@ import jpabook.jpashop_v2.repository.OrderRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -35,8 +36,8 @@ public class OrderApiController {
     for (Order order : all) {
       order.getMember().getName(); //Lazy 강제 초기화
       order.getDelivery().getAddress(); //Lazy 강제 초기화
-      List<OrderItem> orderItems = order.getOrderItems();
-      orderItems.stream().forEach(o -> o.getItem().getName()); //Lazy 강제 초기화
+      List<OrderItem> orderItems = order.getOrderItems();// orderItems 이것도 초기화 하고,
+      orderItems.stream().forEach(o -> o.getItem().getName()); // 그 안에 개개인 item 또한 이름을 가져오기 위해 초기화 한다.
     }
     return all;
   }
@@ -51,6 +52,25 @@ public class OrderApiController {
   }
 
 
+  @GetMapping("/api/v3/orders-not-expected")
+  public List<OrderDto> orderV3NotExpected() {
+    List<Order> orders = orderRepository.findAllWithItemNoDistinct();
+
+    for (Order order : orders) {
+      System.out.println("Order ref = " + order + " id=" + order.getId());
+    }
+
+    List<OrderDto> result = orders.stream()
+        .map(o -> new OrderDto(o))
+        .collect(toList());
+    return result;
+  }
+
+  /**
+   * db의 distinct + 어플리케이션에서 가져와서 한 번 더 걸러줌.
+   *
+   * @return
+   */
   @GetMapping("/api/v3/orders")
   public List<OrderDto> orderV3() {
     List<Order> orders = orderRepository.findAllWithItem();
@@ -65,15 +85,21 @@ public class OrderApiController {
     return result;
   }
 
+
   /**
    * order 입장에서 toone 에 해당하는 건, member, delivery 이건 fetch join 걸어도 됨, 이건 data row 수가 늘어나는건 아니니.
    *
    * @return
    */
-  @GetMapping("/api/v3.1/orders")
-  public List<OrderDto> ordersV3_1_page() {
+  @GetMapping("/api/v3.1/orders/temp")
+  public List<OrderDto> ordersV3_1() {
     List<Order> orders = orderRepository.findAllWithMemberDelivery();
-    //n+1 문제가 터지겠지
+
+    for (Order order : orders) {
+      System.out.println("==> order:" + order.getId());
+    }
+    System.out.println("break");
+    //n+1 문제가 터지겠지 (그런데 옵션에 배치 사이즈 넣어주면 해결됨)
 
     List<OrderDto> result = orders.stream()
         .map(o -> new OrderDto(o))
@@ -81,13 +107,32 @@ public class OrderApiController {
     return result;
   }
 
+  //갓영한님이 선호하는 페이징 방식
+  //다대일,일대일 먼저 긁어오고
+  //그다음 루프든,스트림이든 dto 채워넣는 것 (알아서 in 절 working~ (default_batch_size 설정해주면)
+  @GetMapping("/api/v3.1/orders")
+  public List<OrderDto> ordersV3_1_copy(
+      @RequestParam(value = "offset", defaultValue = "0") int offset,
+      @RequestParam(value = "limit", defaultValue = "20") int limit
+  ) {
+    List<Order> orders = orderRepository.findAllWithMemberDelivery(offset, limit);
+
+//    for (Order order : orders) {
+//      System.out.println("==> order:" + order.getId());
+//    }
+
+    List<OrderDto> result = orders.stream()
+        .map(o -> new OrderDto(o))
+        .collect(toList());
+    return result;
+  }
 
   @Data
   static class OrderDto {
 
     private Long orderId;
     private String name;
-    private LocalDateTime orderDate;//주문시간
+    private LocalDateTime orderDate; //주문시간
     private OrderStatus orderStatus;
     private Address address;
     private List<OrderItemDto> orderItems;

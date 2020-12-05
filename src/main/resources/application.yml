@@ -19,7 +19,8 @@ spring:
       ddl-auto: update # create - 자동 새성
     properties:
       hibernate:
-        # show_sql: true 이 녀석은 sysout 을 통해 찍는 것이고,
+        default_batch_fetch_size : 100
+#        show_sql: true
         format_sql: true
         use_sql_comments: true
 logging:
