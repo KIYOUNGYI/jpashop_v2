@@ -1,5 +1,7 @@
 package jpabook.jpashop_v2.api;
 
+import static java.util.stream.Collectors.groupingBy;
+import static java.util.stream.Collectors.mapping;
 import static java.util.stream.Collectors.toList;
 
 import java.time.LocalDateTime;
@@ -9,6 +11,10 @@ import jpabook.jpashop_v2.domain.Order;
 import jpabook.jpashop_v2.domain.OrderItem;
 import jpabook.jpashop_v2.domain.OrderStatus;
 import jpabook.jpashop_v2.repository.OrderRepository;
+import jpabook.jpashop_v2.repository.query.OrderFlatDto;
+import jpabook.jpashop_v2.repository.query.OrderItemQueryDto;
+import jpabook.jpashop_v2.repository.query.OrderQueryDto;
+import jpabook.jpashop_v2.repository.query.OrderQueryRepository;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OrderApiController {
 
   private final OrderRepository orderRepository;
+  private final OrderQueryRepository orderQueryRepository;
 
   /**
    * V1. 엔티티 직접 노출 - Hibernate5Module 모듈 등록, LAZY=null 처리 * - 양방향 관계 문제 발생 -> @JsonIgnore
@@ -126,6 +133,40 @@ public class OrderApiController {
         .collect(toList());
     return result;
   }
+
+  //jpa에서 dto 직접 조회
+  //아래 orderdto 쓰면 순환 참조 문제 생기기도 하고, (레포지토리가 컨트롤러를 참조하는 의존관계 순환)
+  @GetMapping("/api/v4/orders")
+  public List<OrderQueryDto> ordersV4() {
+    return orderQueryRepository.findOrderQueryDtos();
+  }
+
+  @GetMapping("/api/v5/orders")
+  public List<OrderQueryDto> ordersV5() {
+    return orderQueryRepository.findAllByDtoOptimiaztion();
+  }
+
+  @GetMapping("/api/v5.1/orders")
+  public List<OrderQueryDto> ordersV5Paging(
+      @RequestParam(value = "offset", defaultValue = "0") int offset,
+      @RequestParam(value = "limit", defaultValue = "20") int limit
+  ) {
+    return orderQueryRepository.findAllByDtoOptimiaztion(offset, limit);
+  }
+
+  @GetMapping("/api/v6/orders")
+  public List<OrderQueryDto> ordersV6() {
+    List<OrderFlatDto> flats = orderQueryRepository.findAllByDtoFlat();
+    //이제부터 중복을 내가 걸러내면 된다.
+    //flatdto -> querydto 로 바꾸고, orderItemQuerydto 로 발라내는건데, 최종적으로 orderQueryDto 로 만드는데, e.getValue() 로 넘겨주고, 최종적으로 OrderQueryDto 로 반환, (이걸 메모리에서 해주는거죵)
+    List<OrderQueryDto> collect = flats.stream().collect(groupingBy(o -> new OrderQueryDto(o.getOrderId(), o.getName(), o.getOrderDate(), o.getOrderStatus(), o.getAddress()),
+        mapping(o -> new OrderItemQueryDto(o.getOrderId(), o.getItemName(), o.getOrderPrice(), o.getCount()), toList()))).entrySet().stream()
+        .map(e -> new OrderQueryDto(e.getKey().getOrderId(), e.getKey().getName(), e.getKey().getOrderDate(), e.getKey().getOrderStatus(), e.getKey().getAddress(), e.getValue()))
+        .collect(toList());
+
+    return collect;
+  }
+
 
   @Data
   static class OrderDto {

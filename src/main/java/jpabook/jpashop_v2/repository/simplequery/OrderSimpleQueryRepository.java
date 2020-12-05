@@ -1,7 +1,8 @@
-package jpabook.jpashop_v2.repository;
+package jpabook.jpashop_v2.repository.simplequery;
 
 import java.util.List;
 import javax.persistence.EntityManager;
+import jpabook.jpashop_v2.dto.OrderSimpleQueryDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -13,7 +14,7 @@ public class OrderSimpleQueryRepository {
 
   public List<OrderSimpleQueryDto> findOrderDtos() {
     return em.createQuery(" select new " +
-        "jpabook.jpashop_v2.repository.OrderSimpleQueryDto(o.id, m.name," +
+        "jpabook.jpashop_v2.dto.OrderSimpleQueryDto(o.id, m.name," +
         "o.orderDate, o.status, d.address) " +
         "  from Order o " +
         " join o.member m " +

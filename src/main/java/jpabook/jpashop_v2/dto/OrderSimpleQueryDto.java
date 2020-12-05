@@ -1,4 +1,4 @@
-package jpabook.jpashop_v2.repository;
+package jpabook.jpashop_v2.dto;
 
 import java.time.LocalDateTime;
 import jpabook.jpashop_v2.domain.Address;
