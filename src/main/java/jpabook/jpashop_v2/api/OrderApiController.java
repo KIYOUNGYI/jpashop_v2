@@ -15,9 +15,11 @@ import jpabook.jpashop_v2.repository.query.OrderFlatDto;
 import jpabook.jpashop_v2.repository.query.OrderItemQueryDto;
 import jpabook.jpashop_v2.repository.query.OrderQueryDto;
 import jpabook.jpashop_v2.repository.query.OrderQueryRepository;
+import jpabook.jpashop_v2.service.query.OrderQueryService;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,6 +35,7 @@ public class OrderApiController {
 
   private final OrderRepository orderRepository;
   private final OrderQueryRepository orderQueryRepository;
+  private final OrderQueryService orderQueryService;
 
   /**
    * V1. 엔티티 직접 노출 - Hibernate5Module 모듈 등록, LAZY=null 처리 * - 양방향 관계 문제 발생 -> @JsonIgnore
@@ -92,6 +95,13 @@ public class OrderApiController {
     return result;
   }
 
+  //osiv 껏을 때 대책
+  @GetMapping("/api/v3/orders/osiv")
+  public List<OrderQueryService.OrderDto> orderV3Osiv() {
+    List<OrderQueryService.OrderDto> orders = orderQueryService.findAllWithItemOsivOff();
+    return orders;
+  }
+
 
   /**
    * order 입장에서 toone 에 해당하는 건, member, delivery 이건 fetch join 걸어도 됨, 이건 data row 수가 늘어나는건 아니니.
@@ -136,9 +146,15 @@ public class OrderApiController {
 
   //jpa에서 dto 직접 조회
   //아래 orderdto 쓰면 순환 참조 문제 생기기도 하고, (레포지토리가 컨트롤러를 참조하는 의존관계 순환)
+  //1+n 어쩔 수 없음
   @GetMapping("/api/v4/orders")
   public List<OrderQueryDto> ordersV4() {
     return orderQueryRepository.findOrderQueryDtos();
+  }
+
+  @GetMapping("/api/v4/orders/{id}")
+  public List<OrderQueryDto> ordersV4one(@PathVariable Long id) {
+    return orderQueryRepository.findOrderQueryDtos(id);
   }
 
   @GetMapping("/api/v5/orders")
@@ -154,6 +170,7 @@ public class OrderApiController {
     return orderQueryRepository.findAllByDtoOptimiaztion(offset, limit);
   }
 
+  //order 를 기준으로 페이징이 불가능하다 (치명적 단점)
   @GetMapping("/api/v6/orders")
   public List<OrderQueryDto> ordersV6() {
     List<OrderFlatDto> flats = orderQueryRepository.findAllByDtoFlat();

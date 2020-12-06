@@ -23,6 +23,7 @@ spring:
 #        show_sql: true
         format_sql: true
         use_sql_comments: true
+    open-in-view: true # default option
 logging:
   level:
     org.hibernate.SQL: debug # 이 녀석은 로거를 통해 찍는 것이고, 따라서 show_sql 은 운영에선 사용하면 안됨.
