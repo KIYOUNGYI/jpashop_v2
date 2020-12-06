@@ -1,34 +1,40 @@
 package jpabook.jpashop_v2.domain;
 
-import lombok.*;
-
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@ToString(of={"id","name"})
-public class Team
-{
-    @Id
-    @GeneratedValue
-    @Column(name="team_id")
-    private Long id;
-    private String name;
+@ToString(of = {"id", "name"})
+public class Team {
 
-    @OneToMany(mappedBy = "team")
-    private List<Member> members = new ArrayList<>();
+  @Id
+  @GeneratedValue
+  @Column(name = "team_id")
+  private Long id;
+  private String name;
 
-    public Team(String name)
-    {
-        this.name = name;
-    }
+  @OneToMany(mappedBy = "team")
+  private List<Member> members = new ArrayList<>();
 
-    public Team(Long id,String name)
-    {
-        this.id = id;
-        this.name = name;
-    }
+  public Team(String name) {
+    this.name = name;
+  }
+
+  public Team(Long id, String name) {
+    this.id = id;
+    this.name = name;
+  }
 }

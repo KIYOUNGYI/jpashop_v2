@@ -32,8 +32,7 @@ public class MemberJpaRepositoryTest {
   @DisplayName("save(),findOne() 단위 테스트")
   public void test001() {
     //given
-    Member member = new Member();
-    member.setName("memberA");
+    Member member = new Member("memberA");
     //when
     Long saveId = memberRepository.save(member);
     Member one = memberRepository.findOne(saveId);

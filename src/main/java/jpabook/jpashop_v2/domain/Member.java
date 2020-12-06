@@ -1,24 +1,28 @@
 package jpabook.jpashop_v2.domain;
 
 
+import static javax.persistence.FetchType.LAZY;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 // member <---> team n:1
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Getter
 @Setter
@@ -38,7 +42,7 @@ public class Member {
   @Embedded
   private Address address;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = LAZY)
   @JoinColumn(name = "team_id")
   private Team team;
 
@@ -46,9 +50,6 @@ public class Member {
   @OneToMany(mappedBy = "member")
   private List<Order> orders = new ArrayList<>();
 
-  // 기본 생성자는 필수
-  public Member() {
-  }
 
   public Member(String name) {
     this.name = name;
@@ -62,6 +63,19 @@ public class Member {
   public Member(String name, Address address) {
     this.name = name;
     this.address = address;
+  }
+
+  public Member(String name, int age, Team team) {
+    this.name = name;
+    this.age = age;
+    if (team != null) {
+      changeTeam(team);
+    }
+  }
+
+  public void changeTeam(Team team) {
+    this.team = team;
+    team.getMembers().add(this);
   }
 
   public Member(String name, Address address, Team team) {

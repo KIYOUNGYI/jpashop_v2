@@ -31,8 +31,7 @@ class MemberServiceTest {
   @Test
   public void 회원가입() throws Exception {
     //given
-    Member member = new Member();
-    member.setName("Kim");
+    Member member = new Member("Kim");
     //when
     Long savedId = memberService.join(member);
 
@@ -44,11 +43,9 @@ class MemberServiceTest {
   @Test
   public void 중복회원예외001() throws Exception {
     //given
-    Member member1 = new Member();
-    member1.setName("Kim");
+    Member member1 = new Member("Kim");
 
-    Member member2 = new Member();
-    member2.setName("Kim");
+    Member member2 = new Member("Kim");
 
     assertThrows(IllegalStateException.class, () ->
         {
@@ -63,11 +60,10 @@ class MemberServiceTest {
   @Test
   public void 중복회원예외002() throws Exception {
     //given
-    Member member1 = new Member();
-    member1.setName("Kim");
+    Member member1 = new Member("Kim");
 
-    Member member2 = new Member();
-    member2.setName("Kim");
+    Member member2 = new Member("Kim");
+
 
     memberService.join(member1);
     try {

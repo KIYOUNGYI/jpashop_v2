@@ -48,9 +48,7 @@ public class ProxyPractice
         try
         {
             Team team = new Team("alpha");
-            Member member = new Member();
-            member.setName("Paul Yi");
-            member.setAge(31);
+            Member member = new Member("Paul Yi",31,team);
             em.persist(team);
             em.persist(member);
             em.flush();
@@ -79,15 +77,8 @@ public class ProxyPractice
             Team team = new Team("alpha");
             em.persist(team);
 
-            Member member1 = new Member();
-            member1.setName("Paul Yi");
-            member1.setAge(31);
-            member1.setTeam(team);
-            Member member2 = new Member();
-            member2.setName("Kyle Yi");
-            member2.setAge(32);
-            member2.setTeam(team);
-
+            Member member1 = new Member("Paul Yi",31,team);
+            Member member2 = new Member("Kyle Yi",32,team);
 
             em.persist(member1);
             em.persist(member2);
@@ -131,16 +122,9 @@ public class ProxyPractice
             Team team = new Team("alpha");
             em.persist(team);
 
-            Member member1 = new Member();
-            member1.setName("Paul Yi");
-            member1.setAge(31);
-            member1.setTeam(team);
-            Member member2 = new Member();
-            member2.setName("Kyle Yi");
-            member2.setAge(32);
-            member2.setTeam(team);
+            Member member1 = new Member("Paul Yi",31,team);
 
-
+            Member member2 = new Member("Kyle Yi",32,team);
             em.persist(member1);
             em.persist(member2);
             em.flush();
@@ -177,15 +161,8 @@ public class ProxyPractice
             Team team = new Team("alpha");
             em.persist(team);
 
-            Member member1 = new Member();
-            member1.setName("Paul Yi");
-            member1.setAge(31);
-            member1.setTeam(team);
-            Member member2 = new Member();
-            member2.setName("Kyle Yi");
-            member2.setAge(32);
-            member2.setTeam(team);
-
+            Member member1 = new Member("Paul Yi",31,team);
+            Member member2 = new Member("Kyle Yi",32,team);
 
             em.persist(member1);
             em.persist(member2);
@@ -222,10 +199,7 @@ public class ProxyPractice
             Team team = new Team("alpha");
             em.persist(team);
 
-            Member member1 = new Member();
-            member1.setName("Paul Yi");
-            member1.setAge(31);
-            member1.setTeam(team);
+            Member member1 = new Member("Paul Yi",31,team);
             em.persist(member1);
             em.flush();
             em.clear();
@@ -260,16 +234,9 @@ public class ProxyPractice
             Team team = new Team("alpha");
             em.persist(team);
 
-            Member member1 = new Member();
-            member1.setName("Paul Yi");
-            member1.setAge(31);
-            member1.setTeam(team);
+            Member member1 = new Member("Paul Yi",31,team);
+            Member member2 = new Member("Kyle Yi",32,team);
             em.persist(member1);
-
-            Member member2 = new Member();
-            member2.setName("Paul Yi");
-            member2.setAge(31);
-            member2.setTeam(team);
             em.persist(member2);
 
             em.flush();
@@ -313,16 +280,9 @@ public class ProxyPractice
             Team team = new Team("alpha");
             em.persist(team);
 
-            Member member1 = new Member();
-            member1.setName("Paul Yi");
-            member1.setAge(31);
-            member1.setTeam(team);
+            Member member1 = new Member("Paul Yi",31,team);
+            Member member2 = new Member("Kyle Yi",32,team);
             em.persist(member1);
-
-            Member member2 = new Member();
-            member2.setName("Paul Yi");
-            member2.setAge(31);
-            member2.setTeam(team);
             em.persist(member2);
 
             em.flush();
