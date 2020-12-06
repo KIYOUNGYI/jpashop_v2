@@ -9,6 +9,7 @@ import java.util.List;
 import jpabook.jpashop_v2.domain.Address;
 import jpabook.jpashop_v2.domain.Order;
 import jpabook.jpashop_v2.domain.OrderItem;
+import jpabook.jpashop_v2.domain.OrderSearch;
 import jpabook.jpashop_v2.domain.OrderStatus;
 import jpabook.jpashop_v2.repository.OrderRepository;
 import jpabook.jpashop_v2.repository.query.OrderFlatDto;
@@ -36,6 +37,19 @@ public class OrderApiController {
   private final OrderRepository orderRepository;
   private final OrderQueryRepository orderQueryRepository;
   private final OrderQueryService orderQueryService;
+
+  @GetMapping("/api/v1/orders/querydsl")
+  public List<Order> ordersV1QueryDsl() {
+    OrderSearch orderSearch = new OrderSearch();
+    List<Order> all = orderRepository.findAll(orderSearch);
+    for (Order order : all) {
+      order.getMember().getName(); //Lazy 강제 초기화
+      order.getDelivery().getAddress(); //Lazy 강제 초기화
+      List<OrderItem> orderItems = order.getOrderItems();// orderItems 이것도 초기화 하고,
+      orderItems.stream().forEach(o -> o.getItem().getName()); // 그 안에 개개인 item 또한 이름을 가져오기 위해 초기화 한다.
+    }
+    return all;
+  }
 
   /**
    * V1. 엔티티 직접 노출 - Hibernate5Module 모듈 등록, LAZY=null 처리 * - 양방향 관계 문제 발생 -> @JsonIgnore

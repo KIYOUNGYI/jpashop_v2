@@ -1,9 +1,10 @@
 package jpabook.jpashop_v2.domain;
 
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter @Setter
+@Data
 public class OrderSearch
 {
     private String memberName; //회원 이름

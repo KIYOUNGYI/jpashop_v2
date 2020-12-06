@@ -63,8 +63,8 @@ public class OrderService
     //검색
     public List<Order> findOrders(OrderSearch orderSearch)
     {
-//        return orderRepository.findAll(orderSearch);
-        return null;
+        return orderRepository.findAll(orderSearch);
+
     }
 
     //검색

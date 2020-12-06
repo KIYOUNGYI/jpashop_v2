@@ -1,16 +1,33 @@
 package jpabook.jpashop_v2.repository;
 
+import static jpabook.jpashop_v2.domain.QMember.member;
+import static jpabook.jpashop_v2.domain.QOrder.order;
+
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import java.util.List;
 import javax.persistence.EntityManager;
 import jpabook.jpashop_v2.domain.Order;
+import jpabook.jpashop_v2.domain.OrderSearch;
+import jpabook.jpashop_v2.domain.OrderStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
+
 
 @Repository
 @RequiredArgsConstructor
 public class OrderRepository {
 
   private final EntityManager em;
+  private final JPAQueryFactory query;
+
+  @Autowired
+  public OrderRepository(EntityManager em) {
+    this.em = em;
+    this.query = new JPAQueryFactory(em);
+  }
 
   public void save(Order order) {
     try {
@@ -25,16 +42,33 @@ public class OrderRepository {
     return em.find(Order.class, id);
   }
 
-//    public List<Order> findAll(OrderSearch orderSearch)
-//    {
-//        //querydsl 쓰자
-//    }
 
   public List<Order> findAll() {
     List<Order> temp = em.createQuery("select o from Order o", Order.class).getResultList();
-//        System.out.println("temp size:"+temp.size());
     return temp;
   }
+
+  public List<Order> findAll(OrderSearch orderSearch) {
+    //new operation 엄청 지저분했던 것, querydsl 썻던 것 훨씬 개선됨.
+    return query.select(order).from(order).join(order.member, member)
+        .where(statusEq(orderSearch.getOrderStatus()), nameLike(orderSearch.getMemberName())).limit(1000).fetch();
+
+  }
+
+  private BooleanExpression statusEq(OrderStatus statusCond) {
+    if (statusCond == null) {
+      return null;
+    }
+    return order.status.eq(statusCond);
+  }
+
+  private BooleanExpression nameLike(String nameCond) {
+    if (!StringUtils.hasText(nameCond)) {
+      return null;
+    }
+    return member.name.like(nameCond);
+  }
+
 
   /**
    * fetch 는 jpa 에만 있는 문법. sql에는 없지... 실무에서 자주사용하는건데, 깊이가 생각이 깊음. 이거 100% 이해를 해야함.
