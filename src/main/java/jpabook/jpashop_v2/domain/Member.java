@@ -52,17 +52,17 @@ public class Member {
 
 
   public Member(String name) {
-    this.name = name;
+    this(name, 0);
   }
 
-  public Member(Long id, String name) {
-    this.id = id;
-    this.name = name;
-  }
 
   public Member(String name, Address address) {
     this.name = name;
     this.address = address;
+  }
+
+  public Member(String name, int age) {
+    this(name, age, null);
   }
 
   public Member(String name, int age, Team team) {

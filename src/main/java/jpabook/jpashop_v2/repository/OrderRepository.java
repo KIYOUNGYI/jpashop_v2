@@ -1,5 +1,6 @@
 package jpabook.jpashop_v2.repository;
 
+import static jpabook.jpashop_v2.domain.QDelivery.delivery;
 import static jpabook.jpashop_v2.domain.QMember.member;
 import static jpabook.jpashop_v2.domain.QOrder.order;
 
@@ -85,6 +86,23 @@ public class OrderRepository {
         " join fetch o.delivery d", Order.class).getResultList();
   }
 
+  public List<Order> findAllWithMemberDeliveryUsingQueryDsl() {
+    return query.selectFrom(order)
+        .join(order.member, member).fetchJoin()
+        .join(order.delivery, delivery).fetchJoin().fetch();
+  }
+
+
+  public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+    return em.createQuery(
+        "select o from Order o" +
+            " join fetch o.member m" +
+            " join fetch o.delivery d", Order.class)
+        .setFirstResult(offset)
+        .setMaxResults(limit)
+        .getResultList();
+  }
+
   /**
    *     select
    *         order0_.order_id as order_id1_7_0_,
@@ -140,13 +158,5 @@ public class OrderRepository {
             " join fetch oi.item i", Order.class).getResultList();
   }
 
-  public List<Order> findAllWithMemberDelivery(int offset, int limit) {
-    return em.createQuery(
-        "select o from Order o" +
-            " join fetch o.member m" +
-            " join fetch o.delivery d", Order.class)
-        .setFirstResult(offset)
-        .setMaxResults(limit)
-        .getResultList();
-  }
+
 }
