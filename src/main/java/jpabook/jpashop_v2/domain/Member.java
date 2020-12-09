@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotEmpty;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -84,6 +85,7 @@ public class Member {
     this.team = team;
   }
 
+  @Builder
   public Member(String name, Address address, Team team, Integer age) {
     this.name = name;
     this.address = address;

@@ -108,6 +108,9 @@ public class OrderQueryRepository {
     return orderItems.stream().collect(Collectors.groupingBy(orderItemQueryDto -> orderItemQueryDto.getOrderId()));
   }
 
+  //todo  Map<Long, List<OrderItemQueryDto>> findOrderItemMap(List<Long> orderIds) <- querydsl 버전으로 만들기!
+
+
   private List<Long> toOrderIds(List<OrderQueryDto> result) {
     return result.stream().map(o -> o.getOrderId()).collect(Collectors.toList());
   }
