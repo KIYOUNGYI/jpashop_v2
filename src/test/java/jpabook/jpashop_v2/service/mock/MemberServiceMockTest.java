@@ -2,6 +2,8 @@ package jpabook.jpashop_v2.service.mock;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,6 +45,7 @@ public class MemberServiceMockTest {
     System.out.println("findMembers = " + findMembers);
 
     //then
+    verify(memberRepository, times(1)).findAll();
     assertEquals(1, findMembers.size());
     assertEquals(member1.getName(), findMembers.get(0).getName());
   }
