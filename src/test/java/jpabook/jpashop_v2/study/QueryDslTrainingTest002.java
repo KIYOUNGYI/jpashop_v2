@@ -67,7 +67,7 @@ public class QueryDslTrainingTest002
         String usernameParam = "member1";
         Integer ageParam = 10;
         List<Member> result = searchMember2(usernameParam, ageParam);
-        Assertions.assertThat(result.size()).isEqualTo(1);
+        Assertions.assertThat(result.size()).isEqualTo(0);
     }
 
     private List<Member> searchMember1(String userNameCond, Integer ageCond)

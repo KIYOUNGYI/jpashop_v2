@@ -112,10 +112,10 @@ public class QueryDslTrainingTest {
     //[3]
     Member findMember = queryFactory.select(qm)
         .from(qm)
-        .where(qm.name.eq("user_a"))//파라미터 바인딩 처리
+        .where(qm.name.eq("d_member_0"))//파라미터 바인딩 처리
         .fetchOne();
     System.out.println("findMember:" + findMember.toString());
-    assertThat(findMember.getName()).isEqualTo("user_a");
+    assertThat(findMember.getName()).isEqualTo("d_member_0");
   }
 
 

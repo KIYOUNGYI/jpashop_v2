@@ -40,10 +40,9 @@ class OrderServiceTest {
   public void 상품주문() throws Exception {
     //given
     Member member = createMember();
-//    System.out.println("member.getId():"+member.getId());
-//    em.persist(member);//persist 하는게 왜 좋은거지???
+
     Item book = createBook(10000, "JPA", 10);
-//    em.persist(book);//
+
     //when
     int orderCnt = 2;
     Long orderId = orderService.order(member.getId(), book.getId(), orderCnt);
@@ -105,14 +104,14 @@ class OrderServiceTest {
     book.setName(name);
     book.setPrice(price);
     book.setStockQuantity(stockQuantity);
-//    em.persist(book);
+    em.persist(book);
     return book;
   }
 
   private Member createMember() {
     Member member = new Member("aaa");
     member.setAddress(new Address("Seoul", "booyoung", "123123"));
-//    em.persist(member);
+    em.persist(member);
     return member;
   }
 }

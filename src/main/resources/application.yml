@@ -1,6 +1,4 @@
 spring:
-  profiles:
-    active : local
   output:
     ansi:
       enabled: always
@@ -8,11 +6,10 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
   datasource:
-    # MVCC=TRUE 이거 설정 권장 사항~~
-    url: jdbc:h2:tcp://127.0.0.1/~/jpashop
-    username: sa
+    url: jdbc:mysql://localhost:3306/jpashop?serverTimezone=UTC&characterEncoding=UTF-8
+    username: root
     password:
-    driver-class-name: org.h2.Driver # 이렇게 설정하면 히카리 풀 을 써서 세팅을 해줌
+    driver-class-name: com.mysql.jdbc.Driver # 이렇게 설정하면 히카리 풀 을 써서 세팅을 해줌
 
   jpa:
     hibernate:

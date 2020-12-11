@@ -19,11 +19,10 @@ public class ItemUpdateTest {
 
   @Test
   @DisplayName("dirty checking")
-  @Rollback(false)
+//  @Rollback(false)
   public void dirty_checking_test() {
     //given
-    Book book = em.find(Book.class, 68l);
-
+    Book book = em.find(Book.class, 9l);
     //when,then
 
     //tx
@@ -34,7 +33,7 @@ public class ItemUpdateTest {
 
   @Test
   @DisplayName("merge test <-- isbn 빵꾸난거 봤지? 조심해야됨윰 ")
-  @Rollback(false)
+//  @Rollback(false)
   public void merge_test() {
 
     //given

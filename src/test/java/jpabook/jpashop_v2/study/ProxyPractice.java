@@ -27,12 +27,13 @@ public class ProxyPractice
     @Test
     public void f2()
     {
-        Member member = em.find(Member.class,9L);
+        Member member = em.find(Member.class,75L);
         printMemberAndTeam(member);
     }
 
     private void printMemberAndTeam(Member member)
     {
+
         String userName = member.getName();
         System.out.println("userName:"+userName);
 

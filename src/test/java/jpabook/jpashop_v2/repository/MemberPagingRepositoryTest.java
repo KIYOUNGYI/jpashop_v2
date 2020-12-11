@@ -40,6 +40,6 @@ public class MemberPagingRepositoryTest
         System.out.println("result getcontents : "+ result.getContent());
         System.out.println("size : "+result.getSize());
         System.out.println("total pages : "+result.getTotalPages());
-        Assertions.assertThat(result.getContent()).extracting("username").contains("member1");
+        Assertions.assertThat(result.getContent()).extracting("username").contains("userA");
     }
 }
