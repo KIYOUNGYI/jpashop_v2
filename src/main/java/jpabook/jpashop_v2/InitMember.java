@@ -20,7 +20,6 @@ public class InitMember {
   @PostConstruct
   public void init() {
 //        initMemberService.init();
-//        System.out.println("something weird");
   }
 
   @Component
