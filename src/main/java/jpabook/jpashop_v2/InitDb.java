@@ -29,6 +29,7 @@ public class InitDb {
 //        initService.dbInit5();
 //        initService.dbInit6();
 //        initService.dbInit7();
+//    initService.dbInit8();
   }
 
   @Component
@@ -149,6 +150,19 @@ public class InitDb {
       Delivery delivery = new Delivery();
       delivery.setAddress(member.getAddress());
       return delivery;
+    }
+
+    public void dbInit8() {
+
+      Team teamA = new Team("teamA");
+      Team teamB = new Team("teamB");
+      em.persist(teamA);
+      em.persist(teamB);
+
+      for (int i = 0; i < 200; i++) {
+        Team selectedTeam = i % 2 == 0 ? teamA : teamB;
+        em.persist(new Member("d_member_" + i, null, selectedTeam, i));
+      }
     }
 
   }

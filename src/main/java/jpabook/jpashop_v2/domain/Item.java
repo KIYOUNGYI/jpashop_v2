@@ -60,7 +60,7 @@ import lombok.Setter;
  * 그런데 이건 어째든 트레이드 오프가 있는거고 회사 룰 따르는게 맞음
  */
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "dtype")
 @Getter
 @Setter
