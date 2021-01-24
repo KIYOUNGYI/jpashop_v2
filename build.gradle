@@ -3,6 +3,7 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.9.RELEASE'
 	id 'java'
 	id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
+	id "com.google.protobuf" version "0.8.10"
 }
 
 group = 'jpabook'
@@ -45,6 +46,9 @@ dependencies {
 
 	//querydsl 추가
 	implementation 'com.querydsl:querydsl-jpa'
+
+	implementation('com.google.protobuf:protobuf-java:3.10.0')
+
 }
 
 test {
@@ -67,3 +71,35 @@ compileQuerydsl {
 	options.annotationProcessorPath = configurations.querydsl
 }
 //querydsl 추가 끝
+
+//protobuf {
+//	generatedFilesBaseDir = "$buildDir/generated/source/proto"
+//}
+
+
+sourceSets {
+	main {
+		java {
+			srcDirs 'build/generated/source/proto/main/grpc'
+			srcDirs 'build/generated/source/proto/main/java'
+		}
+	}
+}
+
+protobuf {
+	protoc {
+		artifact = 'com.google.protobuf:protoc:3.10.1'
+	}
+
+	plugins {
+		grpc {
+			artifact = 'io.grpc:protoc-gen-grpc-java:1.25.0'
+		}
+	}
+
+	generateProtoTasks {
+		all()*.plugins {
+			grpc {}
+		}
+	}
+}

@@ -1,0 +1,179 @@
+syntax = "proto3";
+package common;
+
+message Brand {
+  int32 idBrand = 1;
+  string created_at = 2;
+  string updated_at = 3;
+  string brandTitle = 4;
+  string name = 5;
+  string sub_name = 6;
+  string brandTitleInitial = 7;
+  string promotionText = 8;
+  int32 sortKey = 9;
+  bool isDisplay = 10;
+  bool isRecommend = 11;
+  string brandUrl = 12;
+  string brandFacebook = 13;
+  string twitter = 14;
+  string kakaotalk = 15;
+  string youTube = 16;
+  string tel = 17;
+  string start_date = 18;
+  string end_date = 19;
+  int32 brandImg = 20;
+  int32 brandinfo_idx = 21;
+  string create_date = 22;
+  string modified_date = 23;
+  string fileOrgName = 24;
+  string fileSaveName = 25;
+  string fileDir = 26;
+  int32 fileSize = 27;
+  string fileType = 28;
+  int32 insertIdRegister = 29;
+  int32 updateIdRegister = 30;
+  string country = 31;
+
+  //
+  string image_url = 101;
+}
+
+message Product {
+  int32 idProduct = 1;
+  int32 idBrand = 2;
+  string productTitle = 3;
+  string volume = 4;
+  int32 price = 5;
+  string productText = 6;
+  string colorType = 7;
+  string keyWord = 8;
+  int32 readCount = 9;
+  float productScore = 10;
+  float ratingAvg = 11;
+  int32 rationCount = 12;
+  bool isDisplay = 13;
+  bool isNaverApi = 14;
+  bool isNaverShopApi = 15;
+  bool isProductFeelApi = 16;
+  string rankingInfo = 17;
+  int32 productImg = 18;
+  int32 product_idx = 19;
+  string create_date = 20;
+  string modified_date = 21;
+  string fileOrgName = 22;
+  string fileSaveName = 23;
+  string fileDir = 24;
+  int32 fileSize = 25;
+  string fileType = 26;
+  int32 nrationCount = 27;
+  int32 nproductScore = 28;
+  bool isDiscontinue = 29;
+  string release_date = 30;
+  string factorsInsertedDate = 31;
+  string factorsModifiedDate = 32;
+  int32 factorsModifiedAdminId = 33;
+  bool factorsDisplay = 34;
+  string factorsDisplayStartDate = 35;
+  int32 rating1 = 36;
+  int32 rating2 = 37;
+  int32 rating3 = 38;
+  int32 rating4 = 39;
+  int32 rating5 = 40;
+  int32 insertIdRegister = 41;
+  int32 updateIdRegister = 42;
+  int32 factorsIdRegister = 43;
+  int32 primarySecondCategory = 44;
+  int32 primaryThirdCategory = 45;
+
+  string image_url = 101;
+
+  Brand brand = 201;
+}
+
+message Review {
+  int32 idreviewcomment = 1;
+  int32 idRegister = 2;
+  int32 idProduct = 3;
+  string reviewText = 4;
+  int32 rating = 5;
+  int32 likeCount = 6;
+  bool isDisplay = 7;
+  bool isEvaluation = 8;
+  string ipAddress = 9;
+  string create_date = 10;
+  string tag = 11;
+  int32 report_count = 12;
+  string state = 13;
+  bool when_seceded = 14;
+  string modified_date = 15;
+
+  Product product = 201;
+  Register editor = 202;
+}
+
+message Register {
+  int32 idRegister = 1;
+  string userType = 2;
+  string eMail = 3;
+  string passWord = 4;
+  string nickName = 5;
+  int32 location = 6;
+  int32 birthYear = 7;
+  int32 skinType = 8;
+  int32 gender = 9;
+  string userTel = 10;
+  string userZipcode = 11;
+  string userAddress = 12;
+  string userAddressMore = 13;
+  string userName = 14;
+  int32 registerScore = 15;
+  int32 registerRank = 16;
+  int32 eventCount = 17;
+  int32 reviewCount = 18;
+  int32 likeCount = 19;
+  bool isActivity = 20;
+  bool isBlack = 21;
+  bool isBlind = 22;
+  int32 userImg = 23;
+  bool isPush = 30;
+  bool isUserPush = 31;
+  int32 recommender = 32;
+  int32 adminLevel = 33;
+  int32 department = 34;
+  int32 position = 35;
+  string create_date = 36;
+  string modified_date = 37;
+  string last_date = 38;
+  int32 loginCount = 39;
+  string ipAddress = 40;
+  string fileOrgName = 41;
+  string fileSaveName = 42;
+  string fileDir = 43;
+  int32 fileSize = 44;
+  string fileType = 45;
+  string app_version = 46;
+  string inactivated_date = 47;
+  string closed_date = 48;
+  int32 grade = 49;
+  string sns_direct_id = 50;
+
+  string image_url = 101;
+}
+
+message Ratings {
+
+  int32 point_1 = 1;
+  int32 point_2 = 2;
+  int32 point_3 = 3;
+  int32 point_4 = 4;
+  int32 point_5 = 5;
+
+}
+
+message Scoreboard {
+
+  int32 blinded = 1;
+
+  Ratings ratings = 2;
+
+}

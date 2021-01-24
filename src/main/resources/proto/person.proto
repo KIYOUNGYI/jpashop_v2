@@ -1,0 +1,11 @@
+syntax = "proto3";
+package common;
+option java_package = "sample";
+option java_outer_classname = "Common";
+
+
+
+message Person{
+  string name = 1;
+  int64 age = 2;
+}
