@@ -208,6 +208,7 @@ public class OrderApiController {
     private OrderStatus orderStatus;
     private Address address;
     private List<OrderItemDto> orderItems;
+    private int orderItemsSize;
 
     public OrderDto(Order order) {
       orderId = order.getId();
@@ -215,6 +216,7 @@ public class OrderApiController {
       orderDate = order.getOrderDate();
       orderStatus = order.getStatus();
       address = order.getDelivery().getAddress();
+      orderItemsSize = order.getOrderItems().size();
       orderItems = order.getOrderItems()
           .stream()
           .map(orderItem -> new OrderItemDto(orderItem))
