@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package example.options;
+
+option java_package = "com.example.options";//생성될 자바 패키지 명시
+option java_multiple_files = true;//여러 파일 잓성해줌, 빌더 etc etc etc
+
+message OptionMessageTest {
+  int32 id = 1;
+  bool is_simple = 2;
+  string name = 3;
+  repeated int32 sample_list = 4;
+}
+
+message OptionMessageOther {
+  string hello = 1;
+}

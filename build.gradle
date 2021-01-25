@@ -62,12 +62,17 @@ test {
 
 //querydsl 추가 시작
 def querydslDir = "$buildDir/generated/querydsl"
+def javaSrcDir = "$buildDir/generated/source/proto/main/java";
+def grpcDir = "$buildDir/generated/source/proto/main/grpc";
+
 querydsl {
 	jpa = true
 	querydslSourcesDir = querydslDir
 }
 sourceSets {
 	main.java.srcDir querydslDir
+	main.java.srcDir javaSrcDir
+	main.java.srcDir grpcDir
 }
 configurations {
 	querydsl.extendsFrom compileClasspath
