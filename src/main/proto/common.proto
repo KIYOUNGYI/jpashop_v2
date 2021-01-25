@@ -1,0 +1,258 @@
+syntax = "proto3";
+package common;
+
+message Brand {
+  int32 idBrand = 1;
+  string created_at = 2;
+  string updated_at = 3;
+  string brandTitle = 4;
+  string name = 5;
+  string sub_name = 6;
+  string brandTitleInitial = 7;
+  string promotionText = 8;
+  int32 sortKey = 9;
+  bool isDisplay = 10;
+  bool isRecommend = 11;
+  string brandUrl = 12;
+  string brandFacebook = 13;
+  string twitter = 14;
+  string kakaotalk = 15;
+  string youTube = 16;
+  string tel = 17;
+  string start_date = 18;
+  string end_date = 19;
+  int32 brandImg = 20;
+  int32 brandinfo_idx = 21;
+  string create_date = 22;
+  string modified_date = 23;
+  string fileOrgName = 24;
+  string fileSaveName = 25;
+  string fileDir = 26;
+  int32 fileSize = 27;
+  string fileType = 28;
+  int32 insertIdRegister = 29;
+  int32 updateIdRegister = 30;
+  string country = 31;
+
+  //
+  string image_url = 101;
+}
+
+message Product {
+  int32 idProduct = 1;
+  int32 idBrand = 2;
+  string productTitle = 3;
+  string volume = 4;
+  int32 price = 5;
+  string productText = 6;
+  string colorType = 7;
+  string keyWord = 8;
+  int32 readCount = 9;
+  float productScore = 10;
+  float ratingAvg = 11;
+  int32 rationCount = 12; //reviewCount
+  bool isDisplay = 13;
+  bool isNaverApi = 14;
+  bool isNaverShopApi = 15;
+  bool isProductFeelApi = 16;
+  string rankingInfo = 17;
+  int32 productImg = 18;
+  int32 product_idx = 19;
+  string create_date = 20;
+  string modified_date = 21;
+  string fileOrgName = 22;
+  string fileSaveName = 23;
+  string fileDir = 24;
+  int32 fileSize = 25;
+  string fileType = 26;
+  int32 nrationCount = 27;
+  int32 nproductScore = 28;
+  bool isDiscontinue = 29;
+  string release_date = 30;
+  string factorsInsertedDate = 31;
+  string factorsModifiedDate = 32;
+  int32 factorsModifiedAdminId = 33;
+  bool factorsDisplay = 34;
+  string factorsDisplayStartDate = 35;
+  int32 rating1 = 36;
+  int32 rating2 = 37;
+  int32 rating3 = 38;
+  int32 rating4 = 39;
+  int32 rating5 = 40;
+  int32 insertIdRegister = 41;
+  int32 updateIdRegister = 42;
+  int32 factorsIdRegister = 43;
+  int32 primarySecondCategory = 44;
+  int32 primaryThirdCategory = 45;
+
+  string image_url = 101;
+
+  Brand brand = 201;
+}
+
+message Review {
+  int32 idreviewcomment = 1;
+  int32 idRegister = 2;
+  int32 idProduct = 3;
+  string reviewText = 4;
+  int32 rating = 5;
+  int32 likeCount = 6;
+  bool isDisplay = 7;
+  bool isEvaluation = 8;
+  string ipAddress = 9;
+  string create_date = 10;
+  string tag = 11;
+  int32 report_count = 12;
+  string state = 13;
+  bool when_seceded = 14;
+  string modified_date = 15;
+
+  Product product = 201;
+  Register editor = 202;
+}
+
+message Register {
+  int32 idRegister = 1;
+  string userType = 2;
+  string eMail = 3;
+  string passWord = 4;
+  string nickName = 5;
+  int32 location = 6;
+  int32 birthYear = 7;
+  int32 skinType = 8;
+  int32 gender = 9;
+  string userTel = 10;
+  string userZipcode = 11;
+  string userAddress = 12;
+  string userAddressMore = 13;
+  string userName = 14;
+  int32 registerScore = 15;
+  int32 registerRank = 16;
+  int32 eventCount = 17;
+  int32 reviewCount = 18;
+  int32 likeCount = 19;
+  bool isActivity = 20;
+  bool isBlack = 21;
+  bool isBlind = 22;
+  int32 userImg = 23;
+  bool isPush = 30;
+  bool isUserPush = 31;
+  int32 recommender = 32;
+  int32 adminLevel = 33;
+  int32 department = 34;
+  int32 position = 35;
+  string create_date = 36;
+  string modified_date = 37;
+  string last_date = 38;
+  int32 loginCount = 39;
+  string ipAddress = 40;
+  string fileOrgName = 41;
+  string fileSaveName = 42;
+  string fileDir = 43;
+  int32 fileSize = 44;
+  string fileType = 45;
+  string app_version = 46;
+  string inactivated_date = 47;
+  string closed_date = 48;
+  int32 grade = 49;
+  string sns_direct_id = 50;
+
+  string image_url = 101;
+}
+
+message Ratings {
+
+  int32 point_1 = 1;
+  int32 point_2 = 2;
+  int32 point_3 = 3;
+  int32 point_4 = 4;
+  int32 point_5 = 5;
+
+}
+
+message Scoreboard {
+
+  int32 blinded = 1;
+
+  Ratings ratings = 2;
+
+}
+
+message Event {
+  int64 idEvent = 1; //이벤트 항번
+  string eventTitle = 2; //이벤트 제목
+  string brandName = 3; //브랜드 이름
+
+  int64 replyCount = 4; //댓글 수(참여 숫자)
+  int64 startDate = 5; // 이벤트 시작
+  int64 endDate = 6;// 이벤트 종료일
+  int64 candidateCount = 7; //응모자 수
+  bool canApply = 8; //이벤트 참여 가능 여부
+  int32 eventType = 9; //이벤트 타입
+  bool isPrize = 10; //본인의 해당 이벤트 응모, 당첨 여부
+  string eventDesc = 11; //이벤트 설명
+  int32 prerequisiteLimit = 12; //참여가능한 리뷰 작성 수
+  int32 btnLinkType = 13; //링크 유형
+  string btnLinkCode = 14; //링크 코드
+
+  bool isReply = 15; //댓글 활용 여부
+  string replyHolderText = 16; //댓글 플레이스 홀더 텍스트
+  string btnLinkText = 17; //참여 버튼 텍스트
+  string applyWebviewUrl = 18; //이벤트 참여 신청 URL
+  bool isAwarded = 19; //해당 이벤트에서 당첨자를 선정했는지 여부(본인이 아닌 전체를 기준으로 함)
+  string serveyLink = 20; //설문지 링크
+  int64 noticeLinkNum = 21; //공지사항 번호
+  bool haveReply = 22; //해당 이벤트 댓글 작성여부 작성: true, 미작성: false
+
+  int32 prerequisiteType = 23;
+  bool isAllDate = 24;
+  bool isAllCategory = 25;
+  int64 prerequisiteStartDate = 26;
+  int64 prerequisiteEndDate = 27;
+
+  //float ratio = 0; //이미지 비율 -> eventContent
+  //string eventText = 0; //이벤트 본문 -> eventContent
+
+  EventContent eventContent = 101;
+  EventCandidate eventCandidate = 102;
+}
+
+/*
+message Event {
+  int64 idEvent = 1; //이벤트 항번 -> event table(idEvent)
+  string eventTitle = 2;//이벤트 명 -> event table(eventTitle)
+  string brandName = 3; //브랜드 이름 -> 동적 조회
+  int64 replyCount = 4; //댓글 수(참여 숫자) -> event table(replyComent)
+  int64 startDate = 5; //이벤트 시작 시점  -> event table -> 밀리세컨드 형식으로 반환 할 것
+  int64 endDate = 6; //이벤트 종료 시점 -> event table -> 밀리세컨드 형식으로 반환 할 것
+  int64 candidateCount = 7; //응모자 수 -> event table(candidateCount)
+  int32 eventType = 8; //이벤트 타입 event table(eventType)
+  string eventDesc = 9; //이벤트 한줄 설명 -> event table
+
+  EventContent eventContent = 101;
+  EventCandidate eventCandidate = 102;
+}
+*/
+
+message EventContent {
+  int32 idEvent = 1;
+  string fileOrgName = 2;
+  string fileSaveName = 3;
+  string fileDir = 4;
+  int32 fileSize = 5;
+  string fileType = 6;
+  string eventText = 7;
+  int64 createdDate = 8;
+  int64 modifiedDate = 9;
+  float ratio = 10;
+  string eventImage = 11; //이벤트 이미지
+
+}
+
+message EventCandidate {
+  int32 idEvent = 1;
+  int32 idRegister = 2;
+  bool isPrize = 3;
+  int64 createdDate = 4;
+  int64 modifiedDate = 5;
+}

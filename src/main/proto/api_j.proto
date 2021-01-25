@@ -1,0 +1,14 @@
+syntax = "proto3";
+package api_j;
+
+import "common.proto";
+
+message ProductReviewRes {
+  string nextToken = 1;
+  bool hasNext = 2;
+  int64 reviewTotal = 3;
+  int64 likeTotal = 4;
+  repeated common.Review reviews = 5;
+
+  common.Scoreboard scoreboard = 6;
+}
