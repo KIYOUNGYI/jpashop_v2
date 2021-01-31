@@ -16,7 +16,7 @@ spring:
   # spring 메뉴얼 참고해~~
   jpa:
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
     properties:
       hibernate:
 #        show_sql: true # system 을 통해 로그 찍는것

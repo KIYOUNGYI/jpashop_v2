@@ -12,3 +12,12 @@ message ProductReviewRes {
 
   common.Scoreboard scoreboard = 6;
 }
+
+message NewProductsRes {
+  int32 products_total = 1;
+  int32 limit = 2;
+  int32 offset = 3;
+
+  repeated common.Product products = 11;
+  repeated common.MonthlyProduct monthly_products = 12;
+}
