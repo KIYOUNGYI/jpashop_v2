@@ -50,7 +50,7 @@ message Product {
   int32 readCount = 9;
   float productScore = 10;
   float ratingAvg = 11;
-  int32 rationCount = 12; //reviewCount
+  int32 rationCount = 12;
   bool isDisplay = 13;
   bool isNaverApi = 14;
   bool isNaverShopApi = 15;
@@ -84,6 +84,9 @@ message Product {
   int32 factorsIdRegister = 43;
   int32 primarySecondCategory = 44;
   int32 primaryThirdCategory = 45;
+  bool is_recommend = 46;//이달의추천제품인지 아닌지 판단하는 값[비즈니스로직]
+  int32 ads_id = 47;//광고 키값
+  int32 month_rank = 48;//해당월 랭킹
 
   string image_url = 101;
 
@@ -178,81 +181,16 @@ message Scoreboard {
 
 }
 
-message Event {
-  int64 idEvent = 1; //이벤트 항번
-  string eventTitle = 2; //이벤트 제목
-  string brandName = 3; //브랜드 이름
+message MonthlyProduct {
+  int64 idMonthlyProduct = 1;
+  int32 linkType = 2;
+  string linkCode = 3;
 
-  int64 replyCount = 4; //댓글 수(참여 숫자)
-  int64 startDate = 5; // 이벤트 시작
-  int64 endDate = 6;// 이벤트 종료일
-  int64 candidateCount = 7; //응모자 수
-  bool canApply = 8; //이벤트 참여 가능 여부
-  int32 eventType = 9; //이벤트 타입
-  bool isPrize = 10; //본인의 해당 이벤트 응모, 당첨 여부
-  string eventDesc = 11; //이벤트 설명
-  int32 prerequisiteLimit = 12; //참여가능한 리뷰 작성 수
-  int32 btnLinkType = 13; //링크 유형
-  string btnLinkCode = 14; //링크 코드
+  float banner_ratio = 4;
+  int32 idProduct = 5;
+  string productTitle = 6;
+  string start_date = 7;
+  string end_date = 8;
 
-  bool isReply = 15; //댓글 활용 여부
-  string replyHolderText = 16; //댓글 플레이스 홀더 텍스트
-  string btnLinkText = 17; //참여 버튼 텍스트
-  string applyWebviewUrl = 18; //이벤트 참여 신청 URL
-  bool isAwarded = 19; //해당 이벤트에서 당첨자를 선정했는지 여부(본인이 아닌 전체를 기준으로 함)
-  string serveyLink = 20; //설문지 링크
-  int64 noticeLinkNum = 21; //공지사항 번호
-  bool haveReply = 22; //해당 이벤트 댓글 작성여부 작성: true, 미작성: false
-
-  int32 prerequisiteType = 23;
-  bool isAllDate = 24;
-  bool isAllCategory = 25;
-  int64 prerequisiteStartDate = 26;
-  int64 prerequisiteEndDate = 27;
-
-  //float ratio = 0; //이미지 비율 -> eventContent
-  //string eventText = 0; //이벤트 본문 -> eventContent
-
-  EventContent eventContent = 101;
-  EventCandidate eventCandidate = 102;
-}
-
-/*
-message Event {
-  int64 idEvent = 1; //이벤트 항번 -> event table(idEvent)
-  string eventTitle = 2;//이벤트 명 -> event table(eventTitle)
-  string brandName = 3; //브랜드 이름 -> 동적 조회
-  int64 replyCount = 4; //댓글 수(참여 숫자) -> event table(replyComent)
-  int64 startDate = 5; //이벤트 시작 시점  -> event table -> 밀리세컨드 형식으로 반환 할 것
-  int64 endDate = 6; //이벤트 종료 시점 -> event table -> 밀리세컨드 형식으로 반환 할 것
-  int64 candidateCount = 7; //응모자 수 -> event table(candidateCount)
-  int32 eventType = 8; //이벤트 타입 event table(eventType)
-  string eventDesc = 9; //이벤트 한줄 설명 -> event table
-
-  EventContent eventContent = 101;
-  EventCandidate eventCandidate = 102;
-}
-*/
-
-message EventContent {
-  int32 idEvent = 1;
-  string fileOrgName = 2;
-  string fileSaveName = 3;
-  string fileDir = 4;
-  int32 fileSize = 5;
-  string fileType = 6;
-  string eventText = 7;
-  int64 createdDate = 8;
-  int64 modifiedDate = 9;
-  float ratio = 10;
-  string eventImage = 11; //이벤트 이미지
-
-}
-
-message EventCandidate {
-  int32 idEvent = 1;
-  int32 idRegister = 2;
-  bool isPrize = 3;
-  int64 createdDate = 4;
-  int64 modifiedDate = 5;
+  string banner_image_url_720 = 101;//비즈니스 로직
 }
