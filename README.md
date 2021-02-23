@@ -15,3 +15,5 @@
     - ~/jpashop.mv.db 파일 생성 확인(사실 안해도 그만)
     - 이후 부터는 jdbc:h2:tcp://localhost/~/jpashop 이렇게 접속
     
+- dev-001 브랜치
+    - 쿼리 날라가는 개수 세는 모듈 추가

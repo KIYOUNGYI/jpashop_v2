@@ -16,6 +16,8 @@ spring:
       ddl-auto: update # create - 자동 새성
     properties:
       hibernate:
+        session_factory :
+          statement_inspector : jpabook.jpashop_v2.config.HibernateInterceptor
         default_batch_fetch_size : 100
 #        show_sql: true
         format_sql: true
